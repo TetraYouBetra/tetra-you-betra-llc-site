@@ -11,45 +11,45 @@ import { useColorScheme } from '@mui/material/styles';
 const userTestimonials = [
   {
     avatar: <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />,
-    name: 'Remy Sharp',
-    occupation: 'Senior Engineer',
+    name: 'Placeholder Name',
+    occupation: 'Placeholder Occupation',
     testimonial:
-      "I absolutely love how versatile this product is! Whether I'm tackling work projects or indulging in my favorite hobbies, it seamlessly adapts to my changing needs. Its intuitive design has truly enhanced my daily routine, making tasks more efficient and enjoyable.",
+      "Placeholder testimonial text. This is a sample testimonial that can be replaced with actual user feedback. It provides insight into the user's experience and satisfaction with the product or service.",
   },
   {
-    avatar: <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />,
-    name: 'Travis Howard',
-    occupation: 'Lead Product Designer',
+    avatar: <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />,
+    name: 'Placeholder Name',
+    occupation: 'Placeholder Occupation',
     testimonial:
-      "One of the standout features of this product is the exceptional customer support. In my experience, the team behind this product has been quick to respond and incredibly helpful. It's reassuring to know that they stand firmly behind their product.",
+      "Placeholder testimonial text. This is a sample testimonial that can be replaced with actual user feedback. It provides insight into the user's experience and satisfaction with the product or service.",
   },
   {
-    avatar: <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />,
-    name: 'Cindy Baker',
-    occupation: 'CTO',
+    avatar: <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />,
+    name: 'Placeholder Name',
+    occupation: 'Placeholder Occupation',
     testimonial:
-      'The level of simplicity and user-friendliness in this product has significantly simplified my life. I appreciate the creators for delivering a solution that not only meets but exceeds user expectations.',
+      "Placeholder testimonial text. This is a sample testimonial that can be replaced with actual user feedback. It provides insight into the user's experience and satisfaction with the product or service.",
   },
   {
-    avatar: <Avatar alt="Remy Sharp" src="/static/images/avatar/4.jpg" />,
-    name: 'Julia Stewart',
-    occupation: 'Senior Engineer',
+    avatar: <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />,
+    name: 'Placeholder Name',
+    occupation: 'Placeholder Occupation',
     testimonial:
-      "I appreciate the attention to detail in the design of this product. The small touches make a big difference, and it's evident that the creators focused on delivering a premium experience.",
+      "Placeholder testimonial text. This is a sample testimonial that can be replaced with actual user feedback. It provides insight into the user's experience and satisfaction with the product or service.",
   },
   {
-    avatar: <Avatar alt="Travis Howard" src="/static/images/avatar/5.jpg" />,
-    name: 'John Smith',
-    occupation: 'Product Designer',
+    avatar: <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />,
+    name: 'Placeholder Name',
+    occupation: 'Placeholder Occupation',
     testimonial:
-      "I've tried other similar products, but this one stands out for its innovative features. It's clear that the makers put a lot of thought into creating a solution that truly addresses user needs.",
+      "Placeholder testimonial text. This is a sample testimonial that can be replaced with actual user feedback. It provides insight into the user's experience and satisfaction with the product or service.",
   },
   {
-    avatar: <Avatar alt="Cindy Baker" src="/static/images/avatar/6.jpg" />,
-    name: 'Daniel Wolf',
-    occupation: 'CDO',
+    avatar: <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />,
+    name: 'Placeholder Name',
+    occupation: 'Placeholder Occupation',
     testimonial:
-      "The quality of this product exceeded my expectations. It's durable, well-designed, and built to last. Definitely worth the investment!",
+      "Placeholder testimonial text. This is a sample testimonial that can be replaced with actual user feedback. It provides insight into the user's experience and satisfaction with the product or service.",
   },
 ];
 
@@ -120,14 +120,18 @@ export default function Testimonials() {
           Testimonials
         </Typography>
         <Typography variant="body1" sx={{ color: 'text.secondary' }}>
-          See what our customers love about our products. Discover how we excel in
-          efficiency, durability, and satisfaction. Join us for quality, innovation,
-          and reliable support.
+          The best measure of my work comes from the people I've had the
+          opportunity to build alongside. Here are a few words from colleagues
+          and clients about their experience working with me.
         </Typography>
       </Box>
       <Grid container spacing={2}>
         {userTestimonials.map((testimonial, index) => (
-          <Grid size={{ xs: 12, sm: 6, md: 4 }} key={index} sx={{ display: 'flex' }}>
+          <Grid
+            size={{ xs: 12, sm: 6, md: 4 }}
+            key={index}
+            sx={{ display: 'flex' }}
+          >
             <Card
               variant="outlined"
               sx={{
