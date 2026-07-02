@@ -4,6 +4,7 @@ import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
+import heroImage from '../assets/hero.png';
 
 const StyledBox = styled('div')(({ theme }) => ({
   alignSelf: 'center',
@@ -16,7 +17,7 @@ const StyledBox = styled('div')(({ theme }) => ({
   border: '1px solid',
   borderColor: (theme.vars || theme).palette.grey[200],
   boxShadow: '0 0 12px 8px hsla(220, 25%, 80%, 0.2)',
-  backgroundImage: `url(https://mui.com/static/screenshots/material-ui/getting-started/templates/dashboard.jpg)`,
+  backgroundImage: `url(${heroImage})`,
   backgroundSize: 'cover',
   [theme.breakpoints.up('sm')]: {
     marginTop: theme.spacing(10),
@@ -24,7 +25,7 @@ const StyledBox = styled('div')(({ theme }) => ({
   },
   ...theme.applyStyles('dark', {
     boxShadow: '0 0 24px 12px hsla(210, 100%, 25%, 0.2)',
-    backgroundImage: `url(https://mui.com/static/screenshots/material-ui/getting-started/templates/dashboard-dark.jpg)`,
+    backgroundImage: `url(${heroImage})`,
     outlineColor: 'hsla(220, 20%, 42%, 0.1)',
     borderColor: (theme.vars || theme).palette.grey[700],
   }),
@@ -63,13 +64,23 @@ export default function Hero() {
           <Typography
             variant="h1"
             sx={{
-              display: 'flex',
-              flexDirection: { xs: 'column', sm: 'row' },
-              alignItems: 'center',
               fontSize: 'clamp(2rem, 10vw, 2.5rem)',
             }}
           >
-            Software Engineering Consulting for Web, Cloud, and Product Systems
+            Software Engineering Consulting for{' '}
+            <Box
+              component="span"
+              sx={{
+                display: 'inline',
+                background:
+                  'linear-gradient(90deg, #ff2bd6 35%, #7a2cff 55%, #22d9ff 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
+            >
+              Web, Cloud, and Product Systems
+            </Box>
           </Typography>
           <Typography
             sx={{
@@ -93,7 +104,7 @@ export default function Hero() {
             }}
           >
             <Button
-              variant="contained"
+              variant="outlined"
               color="secondary"
               size="small"
               sx={{ minWidth: 'fit-content' }}

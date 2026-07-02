@@ -54,7 +54,14 @@ export default function AppAppBar() {
             sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}
           >
             <YouBetraIcon />
-            <Box sx={{ display: { xs: 'none', md: 'flex', marginLeft: 16 } }}>
+            <Box
+              sx={{
+                display: { xs: 'none', md: 'flex' },
+                marginLeft: 2,
+                flexGrow: 1,
+                justifyContent: 'start',
+              }}
+            >
               <Button variant="text" color="info" size="small" href="#about">
                 About
               </Button>
@@ -79,10 +86,10 @@ export default function AppAppBar() {
                 Engagement Options
               </Button>
               <Button
-                variant="text"
-                color="info"
+                variant="outlined"
+                color="secondary"
                 size="small"
-                sx={{ minWidth: 0 }}
+                sx={{ minWidth: 0, marginLeft: 'auto' }}
                 href="#contact"
               >
                 Contact

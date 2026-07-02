@@ -149,7 +149,7 @@ export default function Contact() {
 
             <Button
               type="submit"
-              variant="contained"
+              variant="outlined"
               color="secondary"
               size="large"
               disabled={loading}
@@ -157,7 +157,7 @@ export default function Contact() {
               {loading ? (
                 <CircularProgress size={24} color="inherit" />
               ) : (
-                'Book Consultation'
+                'Book consultation'
               )}
             </Button>
           </Stack>

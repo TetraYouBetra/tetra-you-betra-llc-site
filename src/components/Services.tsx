@@ -175,9 +175,9 @@ export default function Services() {
         </Typography>
         <Typography variant="body1" sx={{ color: 'text.secondary' }}>
           From strategy and architecture to implementation and long-term
-          support, I provide hands-on engineering expertise to help teams build
-          reliable software, solve complex technical challenges, and deliver
-          with confidence.
+          support, I provide hands-on software engineering expertise to help
+          teams build reliable software, solve complex technical challenges, and
+          deliver with confidence.
         </Typography>
       </Box>
       <Box
