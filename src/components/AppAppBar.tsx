@@ -55,6 +55,9 @@ export default function AppAppBar() {
           >
             <YouBetraIcon />
             <Box sx={{ display: { xs: 'none', md: 'flex', marginLeft: 16 } }}>
+              <Button variant="text" color="info" size="small" href="#about">
+                About
+              </Button>
               <Button variant="text" color="info" size="small" href="#services">
                 Services
               </Button>
@@ -65,9 +68,6 @@ export default function AppAppBar() {
                 href="#testimonials"
               >
                 Testimonials
-              </Button>
-              <Button variant="text" color="info" size="small" href="#about">
-                About
               </Button>
               <Button
                 variant="text"

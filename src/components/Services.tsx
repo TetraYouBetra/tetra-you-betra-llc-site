@@ -7,49 +7,49 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
-import DevicesRoundedIcon from '@mui/icons-material/DevicesRounded';
-import EdgesensorHighRoundedIcon from '@mui/icons-material/EdgesensorHighRounded';
-import ViewQuiltRoundedIcon from '@mui/icons-material/ViewQuiltRounded';
+import {
+  CloudQueueRounded,
+  CodeRounded,
+  SchoolRounded,
+  AccountTreeRounded,
+  BugReportRounded,
+} from '@mui/icons-material';
 
 const items = [
   {
-    icon: <ViewQuiltRoundedIcon />,
+    icon: <CodeRounded />,
     title: 'Full-Stack Development',
     description:
       'React, TypeScript, Node.js, APIs, dashboards, internal tools.',
-    imageLight: `url("https://mui.com/static/images/templates/templates-images/dash-light.png")`,
-    imageDark: `url("https://mui.com/static/images/templates/templates-images/dash-dark.png")`,
+    image: `url("https://mui.com/static/images/templates/templates-images/dash-dark.png")`,
   },
   {
-    icon: <EdgesensorHighRoundedIcon />,
+    icon: <CloudQueueRounded />,
     title: 'Cloud & Serverless Engineering',
     description:
       'AWS Lambda, API Gateway, RDS, deployment pipelines, infrastructure cleanup.',
-    imageLight: `url("https://mui.com/static/images/templates/templates-images/mobile-light.png")`,
-    imageDark: `url("https://mui.com/static/images/templates/templates-images/mobile-dark.png")`,
+    image: `url("https://mui.com/static/images/templates/templates-images/mobile-dark.png")`,
   },
   {
-    icon: <DevicesRoundedIcon />,
+    icon: <AccountTreeRounded />,
     title: 'Architecture & Technical Planning',
     description:
       'System design, database modeling, integrations, scalability, technical roadmaps.',
-    imageLight: `url("https://mui.com/static/images/templates/templates-images/devices-light.png")`,
-    imageDark: `url("https://mui.com/static/images/templates/templates-images/devices-dark.png")`,
+    image: `url("https://mui.com/static/images/templates/templates-images/devices-dark.png")`,
   },
   {
-    icon: <DevicesRoundedIcon />,
+    icon: <BugReportRounded />,
     title: 'Debugging & Rescue Work',
     description:
       'Performance issues, broken deployments, production bugs, brittle systems.',
-    imageLight: `url("https://mui.com/static/images/templates/templates-images/devices-light.png")`,
-    imageDark: `url("https://mui.com/static/images/templates/templates-images/devices-dark.png")`,
+    image: `url("https://mui.com/static/images/templates/templates-images/devices-dark.png")`,
   },
   {
-    icon: <DevicesRoundedIcon />,
-    title: 'EdTech / LTI Integrations',
-    description: 'Only include this if you want that niche visible.',
-    imageLight: `url("https://mui.com/static/images/templates/templates-images/devices-light.png")`,
-    imageDark: `url("https://mui.com/static/images/templates/templates-images/devices-dark.png")`,
+    icon: <SchoolRounded />,
+    title: 'EdTech & LTI Integrations',
+    description:
+      'Learning Tools Interoperability (LTI 1.3), Canvas, Blackboard, Moodle, grade passback, deep linking, and educational platform integrations.',
+    image: `url("https://mui.com/static/images/templates/templates-images/devices-dark.png")`,
   },
 ];
 
@@ -113,24 +113,13 @@ export function MobileLayout({
       </Box>
       <Card variant="outlined">
         <Box
-          sx={(theme) => ({
+          sx={{
             mb: 2,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             minHeight: 280,
-            backgroundImage: 'var(--items-imageLight)',
-            ...theme.applyStyles('dark', {
-              backgroundImage: 'var(--items-imageDark)',
-            }),
-          })}
-          style={
-            items[selectedItemIndex]
-              ? ({
-                  '--items-imageLight': items[selectedItemIndex].imageLight,
-                  '--items-imageDark': items[selectedItemIndex].imageDark,
-                } as any)
-              : {}
-          }
+            backgroundImage: items[selectedItemIndex].image,
+          }}
         />
         <Box sx={{ px: 2, pb: 2 }}>
           <Typography
@@ -275,24 +264,13 @@ export default function Services() {
             }}
           >
             <Box
-              sx={(theme) => ({
+              sx={{
                 m: 'auto',
                 width: 420,
                 height: 500,
                 backgroundSize: 'contain',
-                backgroundImage: 'var(--items-imageLight)',
-                ...theme.applyStyles('dark', {
-                  backgroundImage: 'var(--items-imageDark)',
-                }),
-              })}
-              style={
-                items[selectedItemIndex]
-                  ? ({
-                      '--items-imageLight': items[selectedItemIndex].imageLight,
-                      '--items-imageDark': items[selectedItemIndex].imageDark,
-                    } as any)
-                  : {}
-              }
+                backgroundImage: items[selectedItemIndex].image,
+              }}
             />
           </Card>
         </Box>

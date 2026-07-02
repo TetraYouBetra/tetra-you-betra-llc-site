@@ -23,105 +23,99 @@ export default function YouBetraIcon() {
             <defs id="defs10">
               <filter
                 id="glow"
-                x="-0.038702384"
-                y="-0.041666667"
-                width="1.0774048"
-                height="1.0833333"
+                x="-0.039923388"
+                y="-0.039829363"
+                width="1.0798468"
+                height="1.0796587"
               >
-                <feGaussianBlur
-                  stdDeviation="5"
-                  result="blur"
-                  id="feGaussianBlur1"
-                />
-                <feMerge id="feMerge2">
-                  <feMergeNode in="blur" id="feMergeNode1" />
-                  <feMergeNode in="SourceGraphic" id="feMergeNode2" />
+                <feGaussianBlur stdDeviation="5" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
                 </feMerge>
               </filter>
+
               <linearGradient
                 id="pinkPurple"
-                x1="97.657565"
-                y1="89.82407"
-                x2="258.50532"
-                y2="250.67182"
-                gradientTransform="matrix(1.0444659,0,0,0.95742711,-57.73482,0)"
+                x1="52"
+                y1="79"
+                x2="216"
+                y2="243"
                 gradientUnits="userSpaceOnUse"
               >
-                <stop offset="0%" stopColor="#ff2bd6" id="stop2" />
-                <stop offset="100%" stopColor="#7a2cff" id="stop3" />
+                <stop offset="0%" stopColor="#ff2bd6" />
+                <stop offset="55%" stopColor="#b414f0" />
+                <stop offset="100%" stopColor="#7a2cff" />
               </linearGradient>
+
               <linearGradient
                 id="cyanBlue"
-                x1="392.54511"
-                y1="89.82407"
-                x2="231.69736"
-                y2="250.67182"
-                gradientTransform="scale(1.0444659,0.95742711)"
+                x1="403"
+                y1="79"
+                x2="239"
+                y2="243"
                 gradientUnits="userSpaceOnUse"
               >
-                <stop offset="0%" stopColor="#22f7ff" id="stop4" />
-                <stop offset="100%" stopColor="#1677ff" id="stop5" />
+                <stop offset="0%" stopColor="#22f7ff" />
+                <stop offset="55%" stopColor="#00b7ff" />
+                <stop offset="100%" stopColor="#1677ff" />
               </linearGradient>
+
               <linearGradient
                 id="limeGreen"
-                x1="97.657565"
-                y1="444.94249"
-                x2="258.50532"
-                y2="284.09473"
-                gradientTransform="matrix(1.0444659,0,0,0.95742711,-57.73482,0)"
+                x1="52"
+                y1="430"
+                x2="216"
+                y2="267"
                 gradientUnits="userSpaceOnUse"
               >
-                <stop offset="0%" stopColor="#b6ff00" id="stop6" />
-                <stop offset="100%" stopColor="#4dff8a" id="stop7" />
+                <stop offset="0%" stopColor="#b6ff00" />
+                <stop offset="55%" stopColor="#8cff00" />
+                <stop offset="100%" stopColor="#4dff8a" />
               </linearGradient>
+
               <linearGradient
                 id="orangePink"
-                x1="392.54511"
-                y1="444.94249"
-                x2="231.69736"
-                y2="284.09473"
-                gradientTransform="scale(1.0444659,0.95742711)"
+                x1="403"
+                y1="430"
+                x2="239"
+                y2="267"
                 gradientUnits="userSpaceOnUse"
               >
-                <stop offset="0%" stopColor="#ff2bd6" id="stop8" />
-                <stop offset="45%" stopColor="#ff5b3d" id="stop9" />
-                <stop offset="100%" stopColor="#ffcc33" id="stop10" />
+                <stop offset="0%" stopColor="#ff2bd6" />
+                <stop offset="45%" stopColor="#ff5b3d" />
+                <stop offset="100%" stopColor="#ffcc33" />
               </linearGradient>
             </defs>
+
             <g
               filter="url(#glow)"
               strokeWidth="4"
               strokeLinejoin="round"
-              id="g13"
               transform="matrix(1.2929856,0,0,1.2929856,-38.280572,-73.680936)"
             >
               <path
-                d="m 46.26518,88 h 50 l 84,84 30,-30 v 96 h -96 l 30,-30 -98,-98 z"
+                d="m 52.1534,78.997082 39.172347,-0.0115 94.827653,97.921268 30,-30 v 96 h -96 l 30,-30 -98,-98 z"
                 fill="url(#pinkPurple)"
                 stroke="#ff6df0"
-                id="path10"
-                style={{ fill: 'url(#pinkPurple)' }}
               />
+
               <path
-                d="m 408,88 h -50 l -84,84 -30,-30 v 96 h 96 l -30,-30 98,-98 z"
+                d="m 402.8249,78.997216 -39.17243,-0.0115 -94.82784,97.921264 -30.00005,-30 v 95.99999 h 96.00018 l -30.00005,-29.99999 98.00019,-98 z"
                 fill="url(#cyanBlue)"
                 stroke="#63f7ff"
-                id="path11"
-                style={{ fill: 'url(#cyanBlue)' }}
               />
+
               <path
-                d="m 46.26518,424 h 50 l 84,-84 30,30 v -96 h -96 l 30,30 -98,98 z"
+                d="m 52.153657,430.47395 39.172347,0.0111 94.827656,-97.92128 30,29.99999 v -95.9996 h -96 l 30,30.00002 -98.000003,97.99998 z"
                 fill="url(#limeGreen)"
                 stroke="#cfff36"
-                id="path12"
-                style={{ fill: 'url(#limeGreen)' }}
               />
+
               <path
-                d="m 408,424 h -50 l -84,-84 -30,30 v -96 h 96 l -30,30 98,98 z"
+                d="m 402.82504,430.47381 -39.17243,0.0111 -94.82784,-97.9213 -30.00005,30.00001 V 266.5636 h 96.00018 l -30.00005,29.99999 98.00019,98.00003 z"
                 fill="url(#orangePink)"
                 stroke="#ffcf58"
-                id="path13"
-                style={{ fill: 'url(#orangePink)' }}
               />
             </g>
           </svg>

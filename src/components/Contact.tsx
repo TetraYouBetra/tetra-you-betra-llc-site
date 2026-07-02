@@ -9,7 +9,7 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
-const API_URL = 'https://cloudflare-worker.tetrayoubetra.workers.dev';
+const API_URL = 'https://api.tetrayoubetra.com';
 
 interface ContactForm {
   name: string;
@@ -140,7 +140,8 @@ export default function Contact() {
 
             {success && (
               <Alert severity="success">
-                Thanks! Your message has been sent. I'll be in touch soon.
+                Thanks! Your consultation request has been submitted. I'll be in
+                touch soon.
               </Alert>
             )}
 
@@ -149,13 +150,14 @@ export default function Contact() {
             <Button
               type="submit"
               variant="contained"
+              color="secondary"
               size="large"
               disabled={loading}
             >
               {loading ? (
                 <CircularProgress size={24} color="inherit" />
               ) : (
-                'Send Message'
+                'Book Consultation'
               )}
             </Button>
           </Stack>
