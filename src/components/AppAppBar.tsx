@@ -118,13 +118,13 @@ export default function AppAppBar() {
                 </Box>
                 <List>
                   <ListItem>
+                    <Link href="#about">About</Link>
+                  </ListItem>
+                  <ListItem>
                     <Link href="#services">Services</Link>
                   </ListItem>
                   <ListItem>
                     <Link href="#testimonials">Testimonials</Link>
-                  </ListItem>
-                  <ListItem>
-                    <Link href="#about">About Me</Link>
                   </ListItem>
                   <ListItem>
                     <Link href="#engagement-options">Engagement Options</Link>
