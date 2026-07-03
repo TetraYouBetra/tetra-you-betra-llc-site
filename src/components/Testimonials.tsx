@@ -7,49 +7,25 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import { useColorScheme } from '@mui/material/styles';
+import sanjayAvatar from '../assets/Headshots/sanjay.png';
+import shahbazAvatar from '../assets/Headshots/shahbaz.jpg';
 
 const userTestimonials = [
   {
-    avatar: <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />,
-    name: 'Placeholder Name',
-    occupation: 'Placeholder Occupation',
-    testimonial:
-      "Placeholder testimonial text. This is a sample testimonial that can be replaced with actual user feedback. It provides insight into the user's experience and satisfaction with the product or service.",
+    avatar: <Avatar alt="SR" src={sanjayAvatar} />,
+    linkedin: 'https://www.linkedin.com/in/sanjay-r-v/',
+    name: 'Sanjay R V',
+    occupation: 'Senior Full Stack Engineer',
+    testimonial: `Tara is the kind of technical leader who makes everyone around her better. 
+    Over two years, I watched her architect and deliver an enterprise-scale React and TypeScript platform processing 50,000+ daily requests with zero downtime - owning decisions across the full stack, from frontend architecture to AWS infrastructure. [...]
+What makes her exceptional as a consultant isn't just her technical range - it's her composure. She's clear-headed under pressure, decisive when it matters, and brings out strong work in the people she collaborates with. I'd recommend her without hesitation.`,
   },
   {
-    avatar: <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />,
-    name: 'Placeholder Name',
-    occupation: 'Placeholder Occupation',
-    testimonial:
-      "Placeholder testimonial text. This is a sample testimonial that can be replaced with actual user feedback. It provides insight into the user's experience and satisfaction with the product or service.",
-  },
-  {
-    avatar: <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />,
-    name: 'Placeholder Name',
-    occupation: 'Placeholder Occupation',
-    testimonial:
-      "Placeholder testimonial text. This is a sample testimonial that can be replaced with actual user feedback. It provides insight into the user's experience and satisfaction with the product or service.",
-  },
-  {
-    avatar: <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />,
-    name: 'Placeholder Name',
-    occupation: 'Placeholder Occupation',
-    testimonial:
-      "Placeholder testimonial text. This is a sample testimonial that can be replaced with actual user feedback. It provides insight into the user's experience and satisfaction with the product or service.",
-  },
-  {
-    avatar: <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />,
-    name: 'Placeholder Name',
-    occupation: 'Placeholder Occupation',
-    testimonial:
-      "Placeholder testimonial text. This is a sample testimonial that can be replaced with actual user feedback. It provides insight into the user's experience and satisfaction with the product or service.",
-  },
-  {
-    avatar: <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />,
-    name: 'Placeholder Name',
-    occupation: 'Placeholder Occupation',
-    testimonial:
-      "Placeholder testimonial text. This is a sample testimonial that can be replaced with actual user feedback. It provides insight into the user's experience and satisfaction with the product or service.",
+    avatar: <Avatar alt="MS" src={shahbazAvatar} />,
+    linkedin: 'https://www.linkedin.com/in/mohd-shahbaz-alam/',
+    name: 'Mohd Shahbaz',
+    occupation: 'Full Stack Developer',
+    testimonial: `Working with Tara on the Digit project was an awesome opportunity. Collaboration became easy due to her amazing ability to communicate effectively, to be well-organized, and to help people whenever needed. She delivered her projects without problems, always being sure that all the processes were documented properly. Tara was very important for the smooth running of the project, and I would definitely recommend her as an efficient consultant.`,
   },
 ];
 

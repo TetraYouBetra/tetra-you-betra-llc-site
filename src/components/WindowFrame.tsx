@@ -13,7 +13,7 @@ import {
   win95TitleBarHeight,
   win95TaskBarHeight,
 } from '../theme/win95Theme';
-import { Task } from '../MarketingPage';
+import { Task } from '../YouBetraOS';
 import TaskIcon from './TaskIcon';
 
 const TOP_BAR_HEIGHT = win95TaskBarHeight;
@@ -21,12 +21,7 @@ let topZIndex = 100;
 
 type WindowFrameProps = {
   task: Task;
-  title: React.ReactNode;
   children: React.ReactNode;
-  defaultPosition?: { x: number; y: number };
-  defaultSize?: { width: number | string; height?: number | string };
-  initialFocused?: boolean;
-  dialogMode?: boolean;
   onClose?: () => void;
   onMinimize?: () => void;
   onMaximize?: () => void;
@@ -35,17 +30,18 @@ type WindowFrameProps = {
 
 export default function WindowFrame({
   task,
-  title,
   children,
-  defaultPosition = { x: 24, y: TOP_BAR_HEIGHT + 24 },
-  defaultSize = { width: 420 },
-  initialFocused = false,
-  dialogMode = false,
   onClose,
   onMinimize,
   onMaximize,
   sx,
 }: WindowFrameProps) {
+  const {
+    defaultPosition = { x: 24, y: TOP_BAR_HEIGHT + 24 },
+    defaultSize = { width: 420 },
+    initialFocused = false,
+    mobileDialog = false,
+  } = task;
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const frameRef = React.useRef<HTMLDivElement | null>(null);
@@ -68,6 +64,7 @@ export default function WindowFrame({
   const focusWindow = React.useCallback(() => {
     setFocused(true);
     setZIndex(++topZIndex);
+    task.onClick?.();
   }, []);
 
   const clampPosition = React.useCallback((x: number, y: number) => {
@@ -144,16 +141,16 @@ export default function WindowFrame({
     }
   };
 
-  if (isMobile && dialogMode && !task.open) {
+  if (isMobile && mobileDialog && !task.open) {
     return null;
   }
 
-  if (!isMobile && !dialogMode && (!task.open || task.minimized)) {
+  if (!isMobile && (!task.open || task.minimized)) {
     return null;
   }
 
   const mobileDialogSx: SxProps<Theme> =
-    isMobile && dialogMode
+    isMobile && mobileDialog
       ? {
           position: 'fixed',
           left: 0,
@@ -165,7 +162,7 @@ export default function WindowFrame({
       : {};
 
   const mobileInlineSx: SxProps<Theme> =
-    isMobile && !dialogMode
+    isMobile && !mobileDialog
       ? {
           position: 'relative',
           left: 'auto',
@@ -231,8 +228,8 @@ export default function WindowFrame({
           setFocused(false);
         }
       }}
-      role={dialogMode ? 'dialog' : undefined}
-      aria-modal={dialogMode && isMobile ? true : undefined}
+      role={mobileDialog ? 'dialog' : undefined}
+      aria-modal={mobileDialog && isMobile ? true : undefined}
       sx={rootSx}
     >
       <Box
@@ -266,7 +263,7 @@ export default function WindowFrame({
             textOverflow: 'ellipsis',
           }}
         >
-          {title}
+          {task.label}
         </Typography>
 
         <Box sx={{ display: 'flex', gap: '2px', marginLeft: 'auto' }}>
@@ -286,7 +283,7 @@ export default function WindowFrame({
           userSelect: 'text',
           minHeight: 0,
           flex: 1,
-          overflow: dialogMode && isMobile ? 'auto' : undefined,
+          overflow: mobileDialog && isMobile ? 'auto' : undefined,
         }}
       >
         {children}
