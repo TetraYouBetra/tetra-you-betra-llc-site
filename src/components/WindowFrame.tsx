@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
+import Grow from '@mui/material/Grow';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -17,11 +18,15 @@ import { Task } from '../YouBetraOS';
 import TaskIcon from './TaskIcon';
 
 const TOP_BAR_HEIGHT = win95TaskBarHeight;
-let topZIndex = 100;
+
+type PendingExitAction = 'close' | 'minimize' | null;
 
 type WindowFrameProps = {
   task: Task;
   children: React.ReactNode;
+  active: boolean;
+  zIndex: number;
+  onFocusWindow: () => void;
   onClose?: () => void;
   onMinimize?: () => void;
   onMaximize?: () => void;
@@ -31,6 +36,9 @@ type WindowFrameProps = {
 export default function WindowFrame({
   task,
   children,
+  active,
+  zIndex,
+  onFocusWindow,
   onClose,
   onMinimize,
   onMaximize,
@@ -39,19 +47,26 @@ export default function WindowFrame({
   const {
     defaultPosition = { x: 24, y: TOP_BAR_HEIGHT + 24 },
     defaultSize = { width: 420 },
-    initialFocused = false,
     mobileDialog = false,
   } = task;
+
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const frameRef = React.useRef<HTMLDivElement | null>(null);
+
+  const shouldBeVisible = isMobile
+    ? !mobileDialog || task.open
+    : task.open && !task.minimized;
+
+  const [renderVisible, setRenderVisible] = React.useState(shouldBeVisible);
+  const [pendingExitAction, setPendingExitAction] =
+    React.useState<PendingExitAction>(null);
+  const [animateFrame, setAnimateFrame] = React.useState(false);
 
   const [position, setPosition] = React.useState(() => ({
     x: defaultPosition.x,
     y: Math.max(TOP_BAR_HEIGHT, defaultPosition.y),
   }));
-  const [focused, setFocused] = React.useState(initialFocused);
-  const [zIndex, setZIndex] = React.useState(() => ++topZIndex);
 
   const dragState = React.useRef({
     dragging: false,
@@ -62,14 +77,11 @@ export default function WindowFrame({
   });
 
   const focusWindow = React.useCallback(() => {
-    setFocused(true);
-    setZIndex(++topZIndex);
-    task.onClick?.();
-  }, []);
+    onFocusWindow();
+  }, [onFocusWindow]);
 
   const clampPosition = React.useCallback((x: number, y: number) => {
     const rect = frameRef.current?.getBoundingClientRect();
-
     const width = rect?.width ?? 0;
     const height = rect?.height ?? 0;
 
@@ -83,8 +95,31 @@ export default function WindowFrame({
   }, []);
 
   React.useEffect(() => {
-    if (isMobile) return;
+    if (pendingExitAction) return;
+    setRenderVisible(shouldBeVisible);
+  }, [shouldBeVisible, pendingExitAction]);
 
+  React.useEffect(() => {
+    if (!isMobile || mobileDialog || !frameRef.current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.45) {
+          onFocusWindow();
+        }
+      },
+      {
+        threshold: [0.45],
+        rootMargin: `-${TOP_BAR_HEIGHT}px 0px -35% 0px`,
+      }
+    );
+
+    observer.observe(frameRef.current);
+    return () => observer.disconnect();
+  }, [isMobile, mobileDialog, onFocusWindow]);
+
+  React.useEffect(() => {
+    if (isMobile) return;
     setPosition((current) => clampPosition(current.x, current.y));
   }, [clampPosition, isMobile]);
 
@@ -100,7 +135,7 @@ export default function WindowFrame({
   }, [clampPosition, isMobile]);
 
   const handlePointerDown = (event: React.PointerEvent) => {
-    if (isMobile) return;
+    if (isMobile || task.maximized) return;
 
     focusWindow();
 
@@ -116,7 +151,7 @@ export default function WindowFrame({
   };
 
   const handlePointerMove = (event: React.PointerEvent) => {
-    if (isMobile || !dragState.current.dragging) return;
+    if (isMobile || task.maximized || !dragState.current.dragging) return;
 
     const nextX =
       dragState.current.startX +
@@ -141,13 +176,32 @@ export default function WindowFrame({
     }
   };
 
-  if (isMobile && mobileDialog && !task.open) {
-    return null;
-  }
+  const startExit = (action: Exclude<PendingExitAction, null>) => {
+    setPendingExitAction(action);
+    setRenderVisible(false);
+  };
 
-  if (!isMobile && (!task.open || task.minimized)) {
-    return null;
-  }
+  const handleExited = () => {
+    const action = pendingExitAction;
+    setPendingExitAction(null);
+
+    if (action === 'close') onClose?.();
+    if (action === 'minimize') onMinimize?.();
+  };
+
+  const handleMaximize = () => {
+    setAnimateFrame(true);
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        onMaximize?.();
+      });
+    });
+
+    window.setTimeout(() => {
+      setAnimateFrame(false);
+    }, 240);
+  };
 
   const mobileDialogSx: SxProps<Theme> =
     isMobile && mobileDialog
@@ -173,26 +227,22 @@ export default function WindowFrame({
         }
       : {};
 
-  const maximizedSx =
-    task.maximized && !isMobile
-      ? {
-          position: 'fixed',
-          left: 0,
-          top: `${TOP_BAR_HEIGHT}px`,
-          width: '100vw',
-          height: `calc(100vh - ${TOP_BAR_HEIGHT}px)`,
-          zIndex,
-        }
-      : {};
-
-  const desktopSx: SxProps<Theme> = !isMobile
+  const frameStyle: React.CSSProperties = !isMobile
     ? {
-        position: 'absolute',
-        left: position.x,
-        top: position.y,
-        width: defaultSize.width,
-        height: defaultSize.height,
+        position: 'fixed',
+        left: task.maximized ? 0 : position.x,
+        top: task.maximized ? TOP_BAR_HEIGHT : position.y,
+        width: task.maximized ? '100vw' : defaultSize.width,
+        height: task.maximized
+          ? `calc(100vh - ${TOP_BAR_HEIGHT}px)`
+          : defaultSize.height,
         zIndex,
+        transition: animateFrame
+          ? theme.transitions.create(['left', 'top', 'width', 'height'], {
+              duration: 180,
+              easing: theme.transitions.easing.easeInOut,
+            })
+          : undefined,
       }
     : {};
 
@@ -209,86 +259,109 @@ export default function WindowFrame({
       maxHeight: !isMobile ? `calc(100vh - ${TOP_BAR_HEIGHT}px)` : undefined,
       display: 'flex',
       flexDirection: 'column',
+      transformOrigin:
+        pendingExitAction === 'minimize' ? 'top center' : 'center center',
+      transition: animateFrame
+        ? (theme) =>
+            theme.transitions.create(
+              ['left', 'top', 'width', 'height', 'max-width', 'max-height'],
+              {
+                duration: 180,
+                easing: theme.transitions.easing.easeInOut,
+              }
+            )
+        : undefined,
     },
-    desktopSx,
-    maximizedSx,
     mobileInlineSx,
     mobileDialogSx,
     ...(Array.isArray(sx) ? sx : sx ? [sx] : []),
   ];
 
   return (
-    <Box
-      ref={frameRef}
-      tabIndex={0}
-      onMouseDown={focusWindow}
-      onFocus={focusWindow}
-      onBlur={(event: React.FocusEvent<HTMLDivElement>) => {
-        if (!frameRef.current?.contains(event.relatedTarget as Node | null)) {
-          setFocused(false);
-        }
+    <Grow
+      in={renderVisible}
+      timeout={{ enter: 120, exit: 120 }}
+      mountOnEnter
+      unmountOnExit
+      onExited={handleExited}
+      style={{
+        transformOrigin:
+          pendingExitAction === 'minimize' ? 'top center' : 'center center',
       }}
-      role={mobileDialog ? 'dialog' : undefined}
-      aria-modal={mobileDialog && isMobile ? true : undefined}
-      sx={rootSx}
     >
       <Box
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={handlePointerUp}
-        sx={{
-          height: win95TitleBarHeight,
-          minHeight: win95TitleBarHeight,
-          mx: '3px',
-          mt: '3px',
-          px: '4px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'start',
-          gap: '4px',
-          cursor: isMobile ? 'default' : 'move',
-          backgroundColor: focused ? win95.title : win95.inactiveTitle,
-          color: focused ? win95.titleText : win95.inactiveTitleText,
-        }}
+        ref={frameRef}
+        tabIndex={0}
+        onMouseDown={focusWindow}
+        onFocus={focusWindow}
+        role={mobileDialog ? 'dialog' : undefined}
+        aria-modal={mobileDialog && isMobile ? true : undefined}
+        sx={rootSx}
+        style={frameStyle}
       >
-        {task.icon && <TaskIcon src={task.icon} alt="" />}
-        <Typography
-          component="div"
+        <Box
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
           sx={{
-            fontSize: 12,
-            fontWeight: 700,
-            lineHeight: 1,
-            overflow: 'hidden',
-            whiteSpace: 'nowrap',
-            textOverflow: 'ellipsis',
+            height: win95TitleBarHeight,
+            minHeight: win95TitleBarHeight,
+            mx: '3px',
+            mt: '3px',
+            px: '4px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'start',
+            gap: '4px',
+            cursor: isMobile || task.maximized ? 'default' : 'move',
+            backgroundColor: active ? win95.title : win95.inactiveTitle,
+            color: active ? win95.titleText : win95.inactiveTitleText,
           }}
         >
-          {task.label}
-        </Typography>
+          {task.icon && <TaskIcon src={task.icon} alt="" />}
 
-        <Box sx={{ display: 'flex', gap: '2px', marginLeft: 'auto' }}>
-          {onMinimize && !isMobile && (
-            <WindowButton label="_" onClick={onMinimize} />
-          )}
-          {onMaximize && !isMobile && (
-            <WindowButton label="□" onClick={onMaximize} />
-          )}
-          {onClose && <WindowButton label="×" onClick={onClose} />}
+          <Typography
+            component="div"
+            sx={{
+              fontSize: 12,
+              fontWeight: 700,
+              lineHeight: 1,
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
+              textOverflow: 'ellipsis',
+            }}
+          >
+            {task.label}
+          </Typography>
+
+          <Box sx={{ display: 'flex', gap: '2px', marginLeft: 'auto' }}>
+            {onMinimize && !isMobile && (
+              <WindowButton label="_" onClick={() => startExit('minimize')} />
+            )}
+
+            {onMaximize && !isMobile && (
+              <WindowButton label="□" onClick={handleMaximize} />
+            )}
+
+            {onClose && (
+              <WindowButton label="×" onClick={() => startExit('close')} />
+            )}
+          </Box>
+        </Box>
+
+        <Box
+          sx={{
+            p: '4px',
+            userSelect: 'text',
+            minHeight: 0,
+            flex: 1,
+            overflow: mobileDialog && isMobile ? 'auto' : undefined,
+          }}
+        >
+          {children}
         </Box>
       </Box>
-
-      <Box
-        sx={{
-          p: '10px',
-          userSelect: 'text',
-          minHeight: 0,
-          flex: 1,
-          overflow: mobileDialog && isMobile ? 'auto' : undefined,
-        }}
-      >
-        {children}
-      </Box>
-    </Box>
+    </Grow>
   );
 }
 
@@ -317,7 +390,6 @@ function WindowButton({
         boxShadow: raised,
         '&:hover': {
           backgroundColor: win95.face,
-          boxShadow: raised,
         },
         '&:active': {
           boxShadow: pressed,

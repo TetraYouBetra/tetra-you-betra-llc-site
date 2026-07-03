@@ -27,12 +27,14 @@ export default function Footer() {
   return (
     <>
       <Container
+        id="footer"
         sx={{
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'space-between',
           gap: { xs: 4, sm: 8 },
-          py: { xs: 8, sm: 10 },
+          pt: { xs: 1, sm: 2 },
+          pb: { xs: 1, sm: 2 },
           textAlign: { sm: 'center', md: 'left' },
         }}
       >

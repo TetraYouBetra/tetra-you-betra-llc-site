@@ -35,7 +35,6 @@ export interface Task {
   defaultSize?: { width: number | string; height?: number | string };
   initialFocused?: boolean;
   mobileDialog?: boolean;
-  onClick?: () => void;
 }
 
 export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
@@ -59,9 +58,6 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
         y: 64 + 1 * 24,
       },
       defaultSize: { width: 700, height: 500 },
-      onClick: () => {
-        setActiveTask('#welcome');
-      },
     },
     {
       label: 'About.exe',
@@ -80,9 +76,6 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
         y: 64 + 2 * 24,
       },
       defaultSize: { width: 700, height: 500 },
-      onClick: () => {
-        setActiveTask('#about');
-      },
     },
     {
       label: 'Services.exe',
@@ -101,9 +94,6 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
         y: 64 + 3 * 24,
       },
       defaultSize: { width: 700, height: 500 },
-      onClick: () => {
-        setActiveTask('#services');
-      },
     },
     {
       label: 'Testimonials.exe',
@@ -122,9 +112,6 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
         y: 64 + 4 * 24,
       },
       defaultSize: { width: 700, height: 500 },
-      onClick: () => {
-        setActiveTask('#testimonials');
-      },
     },
     {
       label: 'Engagement Options.exe',
@@ -143,9 +130,6 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
         y: 64 + 5 * 24,
       },
       defaultSize: { width: 700, height: 500 },
-      onClick: () => {
-        setActiveTask('#engagement-options');
-      },
     },
     {
       label: 'Contact.exe',
@@ -164,9 +148,6 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
         y: 64 + 6 * 24,
       },
       defaultSize: { width: 700, height: 500 },
-      onClick: () => {
-        setActiveTask('#contact');
-      },
     },
     {
       label: 'Footer.exe',
@@ -185,12 +166,9 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
         y: 64 + 7 * 24,
       },
       defaultSize: { width: 700, height: 500 },
-      onClick: () => {
-        setActiveTask('#footer');
-      },
     },
     {
-      label: 'Privacy Policy.exe',
+      label: 'Privacy Policy.rtf',
       href: '#privacy-policy',
       icon: iconContact,
       component: (
@@ -207,12 +185,9 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
       },
       defaultSize: { width: 700, height: 500 },
       mobileDialog: true,
-      onClick: () => {
-        setActiveTask('#privacy-policy');
-      },
     },
     {
-      label: 'Terms of Service.exe',
+      label: 'Terms of Service.rtf',
       href: '#terms-of-service',
       icon: iconContact,
       component: (
@@ -229,29 +204,50 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
       },
       defaultSize: { width: 700, height: 500 },
       mobileDialog: true,
-      onClick: () => {
-        setActiveTask('#terms-of-service');
-      },
     },
   ]);
+  const [taskStack, setTaskStack] = useState<string[]>(['#welcome']);
 
-  const updateTask = (href: string, patch: Partial<Task>) => {
+  const patchTask = (href: string, patch: Partial<Task> = {}) => {
     setTasks((current) =>
       current.map((task) => (task.href === href ? { ...task, ...patch } : task))
     );
-    if (patch.minimized === true) {
-      setActiveTask(null);
-    } else {
-      setActiveTask(href);
-    }
+  };
+
+  const bringToFront = (href: string) => {
+    setActiveTask(href);
+
+    setTaskStack((current) => [
+      ...current.filter((taskHref) => taskHref !== href),
+      href,
+    ]);
+  };
+
+  const focusTask = (href: string) => {
+    setActiveTask(href);
   };
 
   const restoreTask = (href: string) => {
-    setActiveTask(href);
-    updateTask(href, {
+    patchTask(href, {
       open: true,
       minimized: false,
     });
+
+    bringToFront(href);
+  };
+
+  const getTaskZIndex = (href: string) => {
+    const index = taskStack.indexOf(href);
+    return index === -1 ? 100 : 100 + index;
+  };
+
+  const focusWindow = (task: Task) => {
+    if (task.mobileDialog) {
+      focusTask(task.href);
+      return;
+    }
+
+    bringToFront(task.href);
   };
 
   return (
@@ -265,29 +261,46 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
       />
       <Desktop tasks={tasks} onTaskOpen={restoreTask} />
       <Box sx={{ marginTop: `${win95TaskBarHeight}px` }}>
-        {tasks.map((task) => (
+        {tasks.map((task, index) => (
           <WindowFrame
             key={task.href}
             task={task}
-            onClose={() =>
-              updateTask(task.href, {
+            active={activeTask === task.href}
+            zIndex={getTaskZIndex(task.href)}
+            onFocusWindow={() => focusWindow(task)}
+            onClose={() => {
+              patchTask(task.href, {
                 open: false,
                 minimized: false,
                 maximized: false,
-              })
-            }
-            onMinimize={() =>
-              updateTask(task.href, {
+              });
+
+              setTaskStack((current) =>
+                current.filter((taskHref) => taskHref !== task.href)
+              );
+
+              setActiveTask((current) =>
+                current === task.href ? null : current
+              );
+            }}
+            onMinimize={() => {
+              patchTask(task.href, {
                 minimized: true,
-              })
-            }
-            onMaximize={() =>
-              updateTask(task.href, {
+              });
+
+              setActiveTask((current) =>
+                current === task.href ? null : current
+              );
+            }}
+            onMaximize={() => {
+              patchTask(task.href, {
                 maximized: !task.maximized,
                 minimized: false,
                 open: true,
-              })
-            }
+              });
+
+              bringToFront(task.href);
+            }}
           >
             {task.component}
           </WindowFrame>
