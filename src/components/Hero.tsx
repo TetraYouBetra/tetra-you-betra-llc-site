@@ -34,7 +34,7 @@ const StyledBox = styled('div')(({ theme }) => ({
 export default function Hero() {
   return (
     <Box
-      id="hero"
+      id="welcome"
       sx={(theme) => ({
         width: '100%',
         backgroundRepeat: 'no-repeat',

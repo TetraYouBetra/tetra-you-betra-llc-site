@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
@@ -6,9 +5,6 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import LegalModal from './LegalModal';
-import PrivacyPolicy from './PrivacyPolicy';
-import TermsOfService from './TermsOfService';
 
 function Copyright() {
   return (
@@ -27,9 +23,11 @@ function Copyright() {
   );
 }
 
-export default function Footer() {
-  const [privacyOpen, setPrivacyOpen] = useState(false);
-  const [tosOpen, setTosOpen] = useState(false);
+export default function Footer(props: {
+  setPrivacyOpen: (open: boolean) => void;
+  setTosOpen: (open: boolean) => void;
+}) {
+  const { setPrivacyOpen, setTosOpen } = props;
 
   return (
     <>
@@ -68,6 +66,16 @@ export default function Footer() {
             Terms of Service
           </Link>
           <Copyright />
+
+          <Link
+            variant="body2"
+            href="https://github.com/grassmunk/Chicago95"
+            sx={{
+              color: 'text.secondary',
+            }}
+          >
+            Pixel icons based on the Chicago95 project.
+          </Link>
         </div>
         <Stack
           direction="row"
@@ -95,20 +103,6 @@ export default function Footer() {
           </IconButton>
         </Stack>
       </Container>
-      <LegalModal
-        open={privacyOpen}
-        onClose={() => setPrivacyOpen(false)}
-        title="Privacy Policy"
-      >
-        <PrivacyPolicy />
-      </LegalModal>
-      <LegalModal
-        open={tosOpen}
-        onClose={() => setTosOpen(false)}
-        title="Terms of Service"
-      >
-        <TermsOfService />
-      </LegalModal>
     </>
   );
 }

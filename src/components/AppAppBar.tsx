@@ -1,40 +1,62 @@
 import * as React from 'react';
-import { styled, alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import Container from '@mui/material/Container';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import Drawer from '@mui/material/Drawer';
-import MenuIcon from '@mui/icons-material/Menu';
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Typography from '@mui/material/Typography';
 import YouBetraIcon from './YouBetraIcon';
-import Link from '@mui/material/Link';
+import { raised, sunken, win95 } from '../theme/win95Theme';
+import iconHero from '../assets/Chicago95/icons/32/application-default-icon.png';
+import iconAbout from '../assets/Chicago95/icons/32/system-help.png';
+import iconServices from '../assets/Chicago95/icons/32/emblem-system.png';
+import iconTestimonials from '../assets/Chicago95/icons/32/stock_people.png';
+import iconEngagementOptions from '../assets/Chicago95/icons/32/folder-documents.png';
+import iconContact from '../assets/Chicago95/icons/32/mail-outbox-old.png';
 
-const StyledToolbar = styled(Toolbar)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  flexShrink: 0,
-  borderRadius: `calc(${theme.shape.borderRadius}px + 8px)`,
-  backdropFilter: 'blur(24px)',
-  border: '1px solid',
-  borderColor: (theme.vars || theme).palette.divider,
-  backgroundColor: theme.vars
-    ? `rgba(${theme.vars.palette.background.defaultChannel} / 0.4)`
-    : alpha(theme.palette.background.default, 0.4),
-  boxShadow: (theme.vars || theme).shadows[1],
-  padding: '8px 12px',
-}));
+const tasks = [
+  {
+    label: 'Welcome',
+    href: '#welcome',
+    icon: iconHero,
+  },
+  {
+    label: 'About',
+    href: '#about',
+    icon: iconAbout,
+  },
+  {
+    label: 'Services',
+    href: '#services',
+    icon: iconServices,
+  },
+  {
+    label: 'Testimonials',
+    href: '#testimonials',
+    icon: iconTestimonials,
+  },
+  {
+    label: 'Engagement Options',
+    href: '#engagement-options',
+    icon: iconEngagementOptions,
+  },
+  {
+    label: 'Contact',
+    href: '#contact',
+    icon: iconContact,
+  },
+];
 
 export default function AppAppBar() {
-  const [open, setOpen] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
 
-  const toggleDrawer = (newOpen: boolean) => () => {
-    setOpen(newOpen);
+  const handleStartClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
   };
 
   return (
@@ -42,109 +64,245 @@ export default function AppAppBar() {
       position="fixed"
       enableColorOnDark
       sx={{
-        boxShadow: 0,
-        bgcolor: 'transparent',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: 34,
+        zIndex: (theme) => theme.zIndex.drawer + 2,
+        backgroundColor: win95.face,
         backgroundImage: 'none',
-        mt: 'calc(var(--template-frame-height, 0px) + 28px)',
+        color: win95.text,
+        boxShadow: raised,
+        px: '2px',
       }}
     >
-      <Container maxWidth="lg">
-        <StyledToolbar variant="dense" disableGutters>
-          <Box
-            sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}
+      <Box
+        sx={{
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '4px',
+          minWidth: 0,
+        }}
+      >
+        <Button
+          onClick={handleStartClick}
+          aria-controls={open ? 'start-menu' : undefined}
+          aria-haspopup="true"
+          aria-expanded={open ? 'true' : undefined}
+          sx={{
+            height: 28,
+            minWidth: 0,
+            flexShrink: 0,
+            px: { xs: '4px', sm: '6px' },
+            gap: '6px',
+            fontWeight: 700,
+            color: win95.text,
+            backgroundColor: win95.face,
+            boxShadow: open ? sunken : raised,
+            '&:hover': {
+              backgroundColor: win95.face,
+              boxShadow: open ? sunken : raised,
+            },
+          }}
+        >
+          <YouBetraIcon />
+          <Typography
+            component="span"
+            sx={{
+              display: { xs: 'none', sm: 'inline' },
+              fontSize: 13,
+              fontWeight: 700,
+              lineHeight: 1,
+            }}
           >
-            <YouBetraIcon />
+            TetraYouBetra
+          </Typography>
+        </Button>
+
+        <Menu
+          id="start-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+          transformOrigin={{ horizontal: 'left', vertical: 'top' }}
+          slotProps={{
+            paper: {
+              sx: {
+                mt: '2px',
+                width: 260,
+                backgroundColor: win95.face,
+                backgroundImage: 'none',
+                boxShadow: raised,
+                border: 'none',
+                overflow: 'hidden',
+              },
+            },
+            list: {
+              sx: {
+                p: '3px',
+              },
+            },
+          }}
+        >
+          <Box sx={{ display: 'flex' }}>
             <Box
               sx={{
-                display: { xs: 'none', md: 'flex' },
-                marginLeft: 2,
-                flexGrow: 1,
-                justifyContent: 'start',
+                width: 28,
+                backgroundColor: win95.title,
+                color: win95.titleText,
+                display: 'flex',
+                alignItems: 'flex-end',
+                justifyContent: 'center',
+                py: 1,
               }}
             >
-              <Button variant="text" color="info" size="small" href="#about">
-                About
-              </Button>
-              <Button variant="text" color="info" size="small" href="#services">
-                Services
-              </Button>
-              <Button
-                variant="text"
-                color="info"
-                size="small"
-                href="#testimonials"
+              <Typography
+                sx={{
+                  writingMode: 'vertical-rl',
+                  transform: 'rotate(180deg)',
+                  fontSize: 18,
+                  fontWeight: 700,
+                  letterSpacing: 0.5,
+                }}
               >
-                Testimonials
-              </Button>
-              <Button
-                variant="text"
-                color="info"
-                size="small"
-                sx={{ minWidth: 0 }}
-                href="#engagement-options"
-              >
-                Engagement Options
-              </Button>
-              <Button
-                variant="outlined"
-                color="secondary"
-                size="small"
-                sx={{ minWidth: 0, marginLeft: 'auto' }}
-                href="#contact"
-              >
-                Contact
-              </Button>
+                YouBetra
+              </Typography>
+            </Box>
+
+            <Box sx={{ flex: 1 }}>
+              {tasks.map((task) => (
+                <MenuItem
+                  key={task.href}
+                  component="a"
+                  href={task.href}
+                  onClick={handleClose}
+                  sx={{
+                    minHeight: 32,
+                    fontSize: 13,
+                    color: win95.text,
+                    '&:hover, &.Mui-focusVisible': {
+                      backgroundColor: win95.title,
+                      color: win95.titleText,
+                    },
+                  }}
+                >
+                  <TaskIcon src={task.icon} alt="" />
+                  {task.label}
+                </MenuItem>
+              ))}
             </Box>
           </Box>
-          <Box sx={{ display: { xs: 'flex', md: 'none' }, gap: 1 }}>
-            <IconButton aria-label="Menu button" onClick={toggleDrawer(true)}>
-              <MenuIcon />
-            </IconButton>
-            <Drawer
-              anchor="top"
-              open={open}
-              onClose={toggleDrawer(false)}
-              slotProps={{
-                paper: {
-                  sx: {
-                    top: 'var(--template-frame-height, 0px)',
-                  },
+        </Menu>
+
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '3px',
+            minWidth: 0,
+            flex: 1,
+            overflow: 'hidden',
+          }}
+        >
+          {tasks.map((task) => (
+            <Button
+              key={task.href}
+              href={task.href}
+              title={task.label}
+              aria-label={task.label}
+              sx={{
+                height: 26,
+                minWidth: { xs: 30, sm: 110 },
+                maxWidth: { xs: 30, sm: 170 },
+                width: { xs: 30, sm: 'auto' },
+                px: { xs: '4px', sm: '8px' },
+                gap: { xs: 0, sm: '6px' },
+                justifyContent: { xs: 'center', sm: 'flex-start' },
+                overflow: 'hidden',
+                flexShrink: 1,
+                color: win95.text,
+                backgroundColor: win95.face,
+                boxShadow: raised,
+                '&:hover': {
+                  backgroundColor: win95.face,
+                  boxShadow: raised,
+                },
+                '&:active': {
+                  boxShadow: sunken,
                 },
               }}
             >
-              <Box sx={{ p: 2, backgroundColor: 'background.default' }}>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'flex-end',
-                  }}
-                >
-                  <IconButton onClick={toggleDrawer(false)}>
-                    <CloseRoundedIcon />
-                  </IconButton>
-                </Box>
-                <List>
-                  <ListItem>
-                    <Link href="#about">About</Link>
-                  </ListItem>
-                  <ListItem>
-                    <Link href="#services">Services</Link>
-                  </ListItem>
-                  <ListItem>
-                    <Link href="#testimonials">Testimonials</Link>
-                  </ListItem>
-                  <ListItem>
-                    <Link href="#engagement-options">Engagement Options</Link>
-                  </ListItem>
-                  <ListItem>
-                    <Link href="#contact">Contact</Link>
-                  </ListItem>
-                </List>
-              </Box>
-            </Drawer>
-          </Box>
-        </StyledToolbar>
-      </Container>
+              <TaskIcon src={task.icon} alt="" />
+
+              <Typography
+                component="span"
+                sx={{
+                  display: { xs: 'none', sm: 'inline' },
+                  fontSize: 12,
+                  overflow: 'hidden',
+                  whiteSpace: 'nowrap',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                {task.label}
+              </Typography>
+            </Button>
+          ))}
+        </Box>
+
+        <Box
+          sx={{
+            height: 26,
+            minWidth: { xs: 54, sm: 118 },
+            px: { xs: '4px', sm: '8px' },
+            flexShrink: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: sunken,
+            backgroundColor: win95.face,
+          }}
+        >
+          <Typography
+            sx={{
+              fontSize: 12,
+              lineHeight: 1,
+              display: { xs: 'none', sm: 'block' },
+            }}
+          >
+            12:00 PM
+          </Typography>
+
+          <Typography
+            aria-hidden
+            sx={{
+              fontSize: 12,
+              lineHeight: 1,
+              display: { xs: 'block', sm: 'none' },
+            }}
+          >
+            🕒
+          </Typography>
+        </Box>
+      </Box>
     </AppBar>
+  );
+}
+
+function TaskIcon({ src, alt }: { src: string; alt: string }) {
+  return (
+    <Box
+      component="img"
+      src={src}
+      alt={alt}
+      sx={{
+        width: 16,
+        height: 16,
+        flexShrink: 0,
+        imageRendering: 'pixelated',
+      }}
+    />
   );
 }

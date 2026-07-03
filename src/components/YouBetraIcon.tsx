@@ -120,24 +120,6 @@ export default function YouBetraIcon() {
             </g>
           </svg>
         </SvgIcon>
-        <Typography
-          variant="h1"
-          component="span"
-          sx={{
-            fontSize: '1rem',
-            fontWeight: 700,
-            letterSpacing: '0.18em',
-            whiteSpace: 'nowrap',
-            userSelect: 'none',
-            background:
-              'linear-gradient(90deg, #ffffff 0%, #ffffff 35%, #ff2bd6 55%, #7a2cff 70%, #22d9ff 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-          }}
-        >
-          TETRA YOU BETRA LLC
-        </Typography>
       </Stack>
     </a>
   );

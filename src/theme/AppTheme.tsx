@@ -7,6 +7,7 @@ import { feedbackCustomizations } from './customizations/feedback';
 import { navigationCustomizations } from './customizations/navigation';
 import { surfacesCustomizations } from './customizations/surfaces';
 import { colorSchemes, typography, shadows, shape } from './themePrimitives';
+import { win95ThemeOptions } from './win95Theme';
 
 interface AppThemeProps {
   children: React.ReactNode;
@@ -38,6 +39,7 @@ export default function AppTheme(props: AppThemeProps) {
             ...feedbackCustomizations,
             ...navigationCustomizations,
             ...surfacesCustomizations,
+            ...win95ThemeOptions.components,
             ...themeComponents,
           },
         });
