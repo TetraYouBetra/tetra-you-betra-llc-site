@@ -6,18 +6,28 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import { raised, sunken, win95 } from '../theme/win95Theme';
-import { Task } from '../MarketingPage';
+import { Task } from '../YouBetraOS';
 import TaskIcon from './TaskIcon';
 import logo32px from '../assets/logo_32px.png';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
 
 type AppAppBarProps = {
   tasks: Task[];
+  activeTask: string | null;
   onTaskClick: (href: string) => void;
 };
 
-export default function AppAppBar({ tasks, onTaskClick }: AppAppBarProps) {
+export default function AppAppBar({
+  tasks,
+  activeTask,
+  onTaskClick,
+}: AppAppBarProps) {
+  const theme = useTheme();
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleStartClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -68,10 +78,6 @@ export default function AppAppBar({ tasks, onTaskClick }: AppAppBarProps) {
             color: win95.text,
             backgroundColor: win95.face,
             boxShadow: open ? sunken : raised,
-            '&:hover': {
-              backgroundColor: win95.face,
-              boxShadow: open ? sunken : raised,
-            },
           }}
         >
           <img
@@ -185,86 +191,85 @@ export default function AppAppBar({ tasks, onTaskClick }: AppAppBarProps) {
             overflow: 'hidden',
           }}
         >
-          {tasks.map((task) => (
-            <Button
-              key={task.href}
-              href={task.href}
-              title={task.label}
-              onClick={() => onTaskClick(task.href)}
-              aria-label={task.label}
-              sx={{
-                height: 26,
-                minWidth: { xs: 30, sm: 110 },
-                maxWidth: { xs: 30, sm: 170 },
-                width: { xs: 30, sm: 'auto' },
-                px: { xs: '4px', sm: '8px' },
-                gap: { xs: 0, sm: '6px' },
-                justifyContent: { xs: 'center', sm: 'flex-start' },
-                overflow: 'hidden',
-                flexShrink: 1,
-                color: win95.text,
-                backgroundColor: win95.face,
-                boxShadow: raised,
-                '&:hover': {
-                  backgroundColor: win95.face,
-                  boxShadow: raised,
-                },
-                '&:active': {
-                  boxShadow: sunken,
-                },
-              }}
-            >
-              {task.icon && <TaskIcon src={task.icon} alt="" />}
-              <Typography
-                component="span"
+          {tasks.map((task) =>
+            task.open || (isMobile && !task.mobileDialog) ? (
+              <Button
+                key={task.href}
+                href={task.href}
+                title={task.label}
+                onClick={() => onTaskClick(task.href)}
+                aria-label={task.label}
                 sx={{
-                  display: { xs: 'none', sm: 'inline' },
-                  fontSize: 12,
+                  height: 26,
+                  minWidth: { xs: 30, sm: 110 },
+                  maxWidth: { xs: 30, sm: 170 },
+                  width: { xs: 30, sm: 'auto' },
+                  px: { xs: '4px', sm: '8px' },
+                  gap: { xs: 0, sm: '6px' },
+                  justifyContent: { xs: 'center', sm: 'flex-start' },
                   overflow: 'hidden',
-                  whiteSpace: 'nowrap',
-                  textOverflow: 'ellipsis',
+                  flexShrink: 1,
+                  color: win95.text,
+                  backgroundColor: win95.face,
+                  boxShadow: activeTask === task.href ? sunken : raised,
                 }}
               >
-                {task.label}
-              </Typography>
-            </Button>
-          ))}
+                {task.icon && <TaskIcon src={task.icon} alt="" />}
+                <Typography
+                  component="span"
+                  sx={{
+                    display: { xs: 'none', sm: 'inline' },
+                    fontSize: 12,
+                    overflow: 'hidden',
+                    whiteSpace: 'nowrap',
+                    textOverflow: 'ellipsis',
+                  }}
+                >
+                  {task.label}
+                </Typography>
+              </Button>
+            ) : (
+              <></>
+            )
+          )}
         </Box>
 
-        <Box
-          sx={{
-            height: 26,
-            minWidth: { xs: 54, sm: 118 },
-            px: { xs: '4px', sm: '8px' },
-            flexShrink: 0,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxShadow: sunken,
-            backgroundColor: win95.face,
-          }}
-        >
-          <Typography
+        {!isMobile && (
+          <Box
             sx={{
-              fontSize: 12,
-              lineHeight: 1,
-              display: { xs: 'none', sm: 'block' },
+              height: 26,
+              minWidth: { xs: 54, sm: 118 },
+              px: { xs: '4px', sm: '8px' },
+              flexShrink: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: sunken,
+              backgroundColor: win95.face,
             }}
           >
-            12:00 PM
-          </Typography>
+            <Typography
+              sx={{
+                fontSize: 12,
+                lineHeight: 1,
+                display: { xs: 'none', sm: 'block' },
+              }}
+            >
+              12:00 PM
+            </Typography>
 
-          <Typography
-            aria-hidden
-            sx={{
-              fontSize: 12,
-              lineHeight: 1,
-              display: { xs: 'block', sm: 'none' },
-            }}
-          >
-            🕒
-          </Typography>
-        </Box>
+            <Typography
+              aria-hidden
+              sx={{
+                fontSize: 12,
+                lineHeight: 1,
+                display: { xs: 'block', sm: 'none' },
+              }}
+            >
+              🕒
+            </Typography>
+          </Box>
+        )}
       </Box>
     </AppBar>
   );

@@ -1,11 +1,8 @@
-import './App.css'
-import MarketingPage from './MarketingPage'
+import './App.css';
+import YouBetraOS from './YouBetraOS';
 
 function App() {
-
-  return (
-    <MarketingPage/>
-  )
+  return <YouBetraOS />;
 }
 
-export default App
+export default App;

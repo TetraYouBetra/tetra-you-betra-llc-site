@@ -52,6 +52,7 @@ export const titleBarInactive = {
 };
 
 export const win95FontFamily = `"MS Sans Serif", Tahoma, Arial, sans-serif`;
+export const aboutFontFamily = `"Comic Sans MS", "Comic Sans", cursive`;
 export const win95TitleBarHeight = 18;
 export const win95TaskBarHeight = 34;
 

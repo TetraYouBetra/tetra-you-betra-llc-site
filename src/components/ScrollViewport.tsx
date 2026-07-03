@@ -4,7 +4,7 @@ import { raised, sunken, win95 } from '../theme/win95Theme';
 
 import type { SxProps, Theme } from '@mui/material/styles';
 
-type Win95ScrollViewportProps = Omit<BoxProps, 'width' | 'height'> & {
+type ScrollViewportProps = Omit<BoxProps, 'width' | 'height'> & {
   children: React.ReactNode;
   width?: React.CSSProperties['width'];
   height?: React.CSSProperties['height'];
@@ -12,14 +12,14 @@ type Win95ScrollViewportProps = Omit<BoxProps, 'width' | 'height'> & {
   sx?: SxProps<Theme>;
 };
 
-export default function Win95ScrollViewport({
+export default function ScrollViewport({
   children,
   width = '100%',
   height = '100%',
   maxHeight,
   sx,
   ...props
-}: Win95ScrollViewportProps) {
+}: ScrollViewportProps) {
   return (
     <Box
       {...props}

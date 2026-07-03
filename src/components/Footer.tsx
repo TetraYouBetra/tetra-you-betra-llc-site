@@ -23,12 +23,7 @@ function Copyright() {
   );
 }
 
-export default function Footer(props: {
-  setPrivacyOpen: (open: boolean) => void;
-  setTosOpen: (open: boolean) => void;
-}) {
-  const { setPrivacyOpen, setTosOpen } = props;
-
+export default function Footer() {
   return (
     <>
       <Container
@@ -44,7 +39,6 @@ export default function Footer(props: {
         <div>
           <Link
             variant="body2"
-            onClick={() => setPrivacyOpen(true)}
             href="#privacy-policy"
             sx={{
               color: 'text.secondary',
@@ -57,7 +51,6 @@ export default function Footer(props: {
           </Typography>
           <Link
             variant="body2"
-            onClick={() => setTosOpen(true)}
             href="#terms-of-service"
             sx={{
               color: 'text.secondary',
