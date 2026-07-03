@@ -79,8 +79,8 @@ export default function Contact() {
       id="contact"
       maxWidth="sm"
       sx={{
-        pt: { xs: 6, sm: 12 },
-        pb: { xs: 8, sm: 16 },
+        pt: { xs: 1, sm: 2 },
+        pb: { xs: 1, sm: 2 },
       }}
     >
       <Stack spacing={4}>

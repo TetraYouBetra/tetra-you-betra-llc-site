@@ -48,13 +48,13 @@ export default function About() {
     fontFamily: aboutFontFamily,
     mb: '0px',
     textShadow: '-2px 2px #000000',
-    fontSize: { xs: '1.4rem', sm: '1.8rem', md: '2.2rem' },
+    fontSize: { xs: '1.4rem', sm: '1.8rem', md: '2rem' },
   };
 
   const h3Sx: SxProps<Theme> = {
     textAlign: 'center',
     fontFamily: aboutFontFamily,
-    fontSize: { xs: '1.2rem', sm: '1.5rem', md: '2rem' },
+    fontSize: { xs: '1.125rem', sm: '1.25rem', md: '1.5rem' },
   };
 
   const bodySx: SxProps<Theme> = {
@@ -84,8 +84,8 @@ export default function About() {
     <Container
       id="about"
       sx={{
-        pt: { xs: 4, sm: 12 },
-        pb: { xs: 8, sm: 16 },
+        pt: { xs: 1, sm: 2 },
+        pb: { xs: 1, sm: 2 },
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -167,83 +167,75 @@ export default function About() {
         </Typography>
 
         {flamingDivider}
-        <Box
+
+        <Stack
+          direction="row"
           sx={{
-            mt: 6,
-            pt: 6,
-            borderTop: 1,
-            borderColor: 'divider',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 2,
+            width: '100%',
+            mb: 2,
           }}
         >
-          <Stack
-            direction="row"
-            sx={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 2,
-              width: '100%',
-              mb: 2,
-            }}
+          <Box
+            component="img"
+            src={questionMarkGif}
+            alt="question mark gif"
+            sx={{ height: '32px', width: 'auto' }}
+          />
+          <Typography
+            className="rainbow-text"
+            component="h3"
+            variant="h5"
+            gutterBottom
+            sx={h2Sx}
           >
-            <Box
-              component="img"
-              src={questionMarkGif}
-              alt="question mark gif"
-              sx={{ height: '48px', width: 'auto' }}
-            />
-            <Typography
-              className="rainbow-text"
-              component="h3"
-              variant="h5"
-              gutterBottom
-              sx={h2Sx}
-            >
-              <span>W</span>
-              <span>h</span>
-              <span>y</span>
-              <span>&nbsp;</span>
-              <span>W</span>
-              <span>o</span>
-              <span>r</span>
-              <span>k</span>
-              <span>&nbsp;</span>
-              <span>W</span>
-              <span>i</span>
-              <span>t</span>
-              <span>h</span>
-              <span>&nbsp;</span>
-              <span>M</span>
-              <span>e</span>
-              <span>?</span>
-            </Typography>
-            <Box
-              component="img"
-              src={questionMarkGif}
-              alt="question mark gif"
-              sx={{ height: '48px', width: 'auto' }}
-            />
-          </Stack>
-
-          <Typography variant="body1" sx={{ mb: 4, textAlign: 'center' }}>
-            Beyond technical expertise, I strive to be the kind of engineering
-            partner who brings clarity, ownership, and thoughtful collaboration
-            to every project.
+            <span>W</span>
+            <span>h</span>
+            <span>y</span>
+            <span>&nbsp;</span>
+            <span>W</span>
+            <span>o</span>
+            <span>r</span>
+            <span>k</span>
+            <span>&nbsp;</span>
+            <span>W</span>
+            <span>i</span>
+            <span>t</span>
+            <span>h</span>
+            <span>&nbsp;</span>
+            <span>M</span>
+            <span>e</span>
+            <span>?</span>
           </Typography>
+          <Box
+            component="img"
+            src={questionMarkGif}
+            alt="question mark gif"
+            sx={{ height: '32px', width: 'auto' }}
+          />
+        </Stack>
 
-          <Grid container spacing={4}>
-            {highlights.map((highlight) => (
-              <Grid key={highlight.title} size={{ xs: 12, sm: 6 }}>
-                <Typography component="h3" variant="h5" gutterBottom sx={h3Sx}>
-                  {highlight.title}
-                </Typography>
+        <Typography variant="body1" sx={{ mb: 4, textAlign: 'center' }}>
+          Beyond technical expertise, I strive to be the kind of engineering
+          partner who brings clarity, ownership, and thoughtful collaboration to
+          every project.
+        </Typography>
 
-                <Typography sx={{ textAlign: 'center' }} variant="body1">
-                  {highlight.description}
-                </Typography>
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
+        <Grid container spacing={4}>
+          {highlights.map((highlight) => (
+            <Grid key={highlight.title} size={{ xs: 12, sm: 6 }}>
+              <Typography component="h3" variant="h5" gutterBottom sx={h3Sx}>
+                {highlight.title}
+              </Typography>
+
+              <Typography sx={{ textAlign: 'center' }} variant="body1">
+                {highlight.description}
+              </Typography>
+            </Grid>
+          ))}
+        </Grid>
       </Box>
     </Container>
   );
