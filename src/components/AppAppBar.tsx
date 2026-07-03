@@ -5,49 +5,17 @@ import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
-import YouBetraIcon from './YouBetraIcon';
 import { raised, sunken, win95 } from '../theme/win95Theme';
-import iconHero from '../assets/Chicago95/icons/32/application-default-icon.png';
-import iconAbout from '../assets/Chicago95/icons/32/system-help.png';
-import iconServices from '../assets/Chicago95/icons/32/emblem-system.png';
-import iconTestimonials from '../assets/Chicago95/icons/32/stock_people.png';
-import iconEngagementOptions from '../assets/Chicago95/icons/32/folder-documents.png';
-import iconContact from '../assets/Chicago95/icons/32/mail-outbox-old.png';
+import { Task } from '../MarketingPage';
+import TaskIcon from './TaskIcon';
+import logo32px from '../assets/logo_32px.png';
 
-const tasks = [
-  {
-    label: 'Welcome',
-    href: '#welcome',
-    icon: iconHero,
-  },
-  {
-    label: 'About',
-    href: '#about',
-    icon: iconAbout,
-  },
-  {
-    label: 'Services',
-    href: '#services',
-    icon: iconServices,
-  },
-  {
-    label: 'Testimonials',
-    href: '#testimonials',
-    icon: iconTestimonials,
-  },
-  {
-    label: 'Engagement Options',
-    href: '#engagement-options',
-    icon: iconEngagementOptions,
-  },
-  {
-    label: 'Contact',
-    href: '#contact',
-    icon: iconContact,
-  },
-];
+type AppAppBarProps = {
+  tasks: Task[];
+  onTaskClick: (href: string) => void;
+};
 
-export default function AppAppBar() {
+export default function AppAppBar({ tasks, onTaskClick }: AppAppBarProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -94,7 +62,7 @@ export default function AppAppBar() {
             height: 28,
             minWidth: 0,
             flexShrink: 0,
-            px: { xs: '4px', sm: '6px' },
+            px: { xs: '6px', sm: '8px' },
             gap: '6px',
             fontWeight: 700,
             color: win95.text,
@@ -106,17 +74,21 @@ export default function AppAppBar() {
             },
           }}
         >
-          <YouBetraIcon />
+          <img
+            src={logo32px}
+            alt="YouBetra Logo"
+            style={{ width: 16, height: 16 }}
+          />
           <Typography
             component="span"
             sx={{
-              display: { xs: 'none', sm: 'inline' },
+              // display: { xs: 'none', sm: 'inline' },
               fontSize: 13,
               fontWeight: 700,
               lineHeight: 1,
             }}
           >
-            TetraYouBetra
+            Tetra You Betra
           </Typography>
         </Button>
 
@@ -167,7 +139,10 @@ export default function AppAppBar() {
                   letterSpacing: 0.5,
                 }}
               >
-                YouBetra
+                YouBetra{' '}
+                <Box component="span" sx={{ fontWeight: 400 }}>
+                  1.0
+                </Box>
               </Typography>
             </Box>
 
@@ -177,9 +152,13 @@ export default function AppAppBar() {
                   key={task.href}
                   component="a"
                   href={task.href}
-                  onClick={handleClose}
+                  onClick={() => {
+                    handleClose();
+                    onTaskClick(task.href);
+                  }}
                   sx={{
                     minHeight: 32,
+                    gap: '6px',
                     fontSize: 13,
                     color: win95.text,
                     '&:hover, &.Mui-focusVisible': {
@@ -188,7 +167,7 @@ export default function AppAppBar() {
                     },
                   }}
                 >
-                  <TaskIcon src={task.icon} alt="" />
+                  {task.icon && <TaskIcon src={task.icon} alt="" />}
                   {task.label}
                 </MenuItem>
               ))}
@@ -211,6 +190,7 @@ export default function AppAppBar() {
               key={task.href}
               href={task.href}
               title={task.label}
+              onClick={() => onTaskClick(task.href)}
               aria-label={task.label}
               sx={{
                 height: 26,
@@ -234,8 +214,7 @@ export default function AppAppBar() {
                 },
               }}
             >
-              <TaskIcon src={task.icon} alt="" />
-
+              {task.icon && <TaskIcon src={task.icon} alt="" />}
               <Typography
                 component="span"
                 sx={{
@@ -288,21 +267,5 @@ export default function AppAppBar() {
         </Box>
       </Box>
     </AppBar>
-  );
-}
-
-function TaskIcon({ src, alt }: { src: string; alt: string }) {
-  return (
-    <Box
-      component="img"
-      src={src}
-      alt={alt}
-      sx={{
-        width: 16,
-        height: 16,
-        flexShrink: 0,
-        imageRendering: 'pixelated',
-      }}
-    />
   );
 }

@@ -1,9 +1,10 @@
-import Typography from '@mui/material/Typography';
+import Typography, { TypographyProps } from '@mui/material/Typography';
 
 export default function PrivacyPolicy() {
+  const headerProps: TypographyProps = { variant: 'h3', sx: { mt: 2, mb: 1 } };
   return (
     <>
-      <Typography component="h2">Privacy Policy</Typography>
+      <Typography {...headerProps}>Privacy Policy</Typography>
 
       <Typography>
         Tetra You Betra LLC ("we", "our", or "us") respects your privacy. This
@@ -11,7 +12,7 @@ export default function PrivacyPolicy() {
         and how it is used.
       </Typography>
 
-      <Typography component="h2">Information We Collect</Typography>
+      <Typography {...headerProps}>Information We Collect</Typography>
 
       <Typography>
         The only personal information we collect is the information you
@@ -25,7 +26,7 @@ export default function PrivacyPolicy() {
         personal information for marketing purposes.
       </Typography>
 
-      <Typography component="h2">Data Retention</Typography>
+      <Typography {...headerProps}>Data Retention</Typography>
 
       <Typography>
         Information submitted through our contact form is retained only as long
@@ -33,21 +34,21 @@ export default function PrivacyPolicy() {
         business relationship.
       </Typography>
 
-      <Typography component="h2">Cookies and Tracking</Typography>
+      <Typography {...headerProps}>Cookies and Tracking</Typography>
 
       <Typography>
         This website does not intentionally use cookies or analytics to collect
         personal information from visitors.
       </Typography>
 
-      <Typography component="h2">Third-Party Services</Typography>
+      <Typography {...headerProps}>Third-Party Services</Typography>
 
       <Typography>
         If you choose to contact us using services such as email, those services
         are governed by their own privacy policies.
       </Typography>
 
-      <Typography component="h2">Information Security</Typography>
+      <Typography {...headerProps}>Information Security</Typography>
 
       <Typography>
         We take reasonable measures to protect the information you submit.
@@ -55,7 +56,7 @@ export default function PrivacyPolicy() {
         can be guaranteed to be completely secure.
       </Typography>
 
-      <Typography component="h2">Your Rights</Typography>
+      <Typography {...headerProps}>Your Rights</Typography>
 
       <Typography>
         If you have submitted personal information and would like it corrected
@@ -63,14 +64,14 @@ export default function PrivacyPolicy() {
         honor your request, subject to any legal or business obligations.
       </Typography>
 
-      <Typography component="h2">Changes to This Policy</Typography>
+      <Typography {...headerProps}>Changes to This Policy</Typography>
 
       <Typography>
         We may update this Privacy Policy from time to time. Any changes will be
         posted on this page with an updated effective date.
       </Typography>
 
-      <Typography component="h2">Contact</Typography>
+      <Typography {...headerProps}>Contact</Typography>
 
       <Typography>
         If you have any questions about this Privacy Policy or how your

@@ -13,18 +13,20 @@ import {
   win95TitleBarHeight,
   win95TaskBarHeight,
 } from '../theme/win95Theme';
+import { Task } from '../MarketingPage';
+import TaskIcon from './TaskIcon';
 
 const TOP_BAR_HEIGHT = win95TaskBarHeight;
 let topZIndex = 100;
 
 type WindowFrameProps = {
+  task: Task;
   title: React.ReactNode;
   children: React.ReactNode;
   defaultPosition?: { x: number; y: number };
   defaultSize?: { width: number | string; height?: number | string };
   initialFocused?: boolean;
   dialogMode?: boolean;
-  open?: boolean;
   onClose?: () => void;
   onMinimize?: () => void;
   onMaximize?: () => void;
@@ -32,13 +34,13 @@ type WindowFrameProps = {
 };
 
 export default function WindowFrame({
+  task,
   title,
   children,
   defaultPosition = { x: 24, y: TOP_BAR_HEIGHT + 24 },
   defaultSize = { width: 420 },
   initialFocused = false,
   dialogMode = false,
-  open = true,
   onClose,
   onMinimize,
   onMaximize,
@@ -142,7 +144,11 @@ export default function WindowFrame({
     }
   };
 
-  if (isMobile && dialogMode && !open) {
+  if (isMobile && dialogMode && !task.open) {
+    return null;
+  }
+
+  if (!isMobile && !dialogMode && (!task.open || task.minimized)) {
     return null;
   }
 
@@ -170,6 +176,18 @@ export default function WindowFrame({
         }
       : {};
 
+  const maximizedSx =
+    task.maximized && !isMobile
+      ? {
+          position: 'fixed',
+          left: 0,
+          top: `${TOP_BAR_HEIGHT}px`,
+          width: '100vw',
+          height: `calc(100vh - ${TOP_BAR_HEIGHT}px)`,
+          zIndex,
+        }
+      : {};
+
   const desktopSx: SxProps<Theme> = !isMobile
     ? {
         position: 'absolute',
@@ -181,36 +199,41 @@ export default function WindowFrame({
       }
     : {};
 
+  const rootSx: SxProps<Theme> = [
+    {
+      backgroundColor: win95.face,
+      color: win95.text,
+      boxShadow: raised,
+      fontFamily: win95FontFamily,
+      outline: 'none',
+      userSelect: 'none',
+      overflow: 'hidden',
+      maxWidth: !isMobile ? '100vw' : undefined,
+      maxHeight: !isMobile ? `calc(100vh - ${TOP_BAR_HEIGHT}px)` : undefined,
+      display: 'flex',
+      flexDirection: 'column',
+    },
+    desktopSx,
+    maximizedSx,
+    mobileInlineSx,
+    mobileDialogSx,
+    ...(Array.isArray(sx) ? sx : sx ? [sx] : []),
+  ];
+
   return (
     <Box
       ref={frameRef}
       tabIndex={0}
       onMouseDown={focusWindow}
       onFocus={focusWindow}
-      onBlur={(event) => {
+      onBlur={(event: React.FocusEvent<HTMLDivElement>) => {
         if (!frameRef.current?.contains(event.relatedTarget as Node | null)) {
           setFocused(false);
         }
       }}
       role={dialogMode ? 'dialog' : undefined}
       aria-modal={dialogMode && isMobile ? true : undefined}
-      sx={{
-        backgroundColor: win95.face,
-        color: win95.text,
-        boxShadow: raised,
-        fontFamily: win95FontFamily,
-        outline: 'none',
-        userSelect: 'none',
-        overflow: 'hidden',
-        maxWidth: !isMobile ? `calc(100vw)` : undefined,
-        maxHeight: !isMobile ? `calc(100vh - ${TOP_BAR_HEIGHT}px)` : undefined,
-        display: 'flex',
-        flexDirection: 'column',
-        ...desktopSx,
-        ...mobileInlineSx,
-        ...mobileDialogSx,
-        ...sx,
-      }}
+      sx={rootSx}
     >
       <Box
         onPointerDown={handlePointerDown}
@@ -224,12 +247,14 @@ export default function WindowFrame({
           px: '4px',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between',
+          justifyContent: 'start',
+          gap: '4px',
           cursor: isMobile ? 'default' : 'move',
           backgroundColor: focused ? win95.title : win95.inactiveTitle,
           color: focused ? win95.titleText : win95.inactiveTitleText,
         }}
       >
+        {task.icon && <TaskIcon src={task.icon} alt="" />}
         <Typography
           component="div"
           sx={{
@@ -244,7 +269,7 @@ export default function WindowFrame({
           {title}
         </Typography>
 
-        <Box sx={{ display: 'flex', gap: '2px' }}>
+        <Box sx={{ display: 'flex', gap: '2px', marginLeft: 'auto' }}>
           {onMinimize && !isMobile && (
             <WindowButton label="_" onClick={onMinimize} />
           )}

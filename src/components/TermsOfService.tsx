@@ -1,9 +1,11 @@
-import Typography from '@mui/material/Typography';
+import Typography, { TypographyProps } from '@mui/material/Typography';
 
 export default function TermsOfService() {
+  const headerProps: TypographyProps = { variant: 'h3', sx: { mt: 2, mb: 1 } };
+
   return (
     <>
-      <Typography component="h2">Terms of Service</Typography>
+      <Typography {...headerProps}>Terms of Service</Typography>
 
       <Typography>
         Welcome to the Tetra You Betra LLC website. By accessing or using this
@@ -11,7 +13,7 @@ export default function TermsOfService() {
         these terms, please do not use this website.
       </Typography>
 
-      <Typography component="h2">Website Purpose</Typography>
+      <Typography {...headerProps}>Website Purpose</Typography>
 
       <Typography>
         This website is provided for informational purposes only. Its purpose is
@@ -19,7 +21,7 @@ export default function TermsOfService() {
         provide a means for prospective clients to contact us.
       </Typography>
 
-      <Typography component="h2">Acceptable Use</Typography>
+      <Typography {...headerProps}>Acceptable Use</Typography>
 
       <Typography>
         You agree not to use this website in any manner that could damage,
@@ -28,7 +30,7 @@ export default function TermsOfService() {
         the website, its infrastructure, or any related systems.
       </Typography>
 
-      <Typography component="h2">Intellectual Property</Typography>
+      <Typography {...headerProps}>Intellectual Property</Typography>
 
       <Typography>
         Unless otherwise stated, all content on this website, including text,
@@ -38,7 +40,7 @@ export default function TermsOfService() {
         any content without prior written permission.
       </Typography>
 
-      <Typography component="h2">No Professional Relationship</Typography>
+      <Typography {...headerProps}>No Professional Relationship</Typography>
 
       <Typography>
         Contacting us through this website does not create a client, consulting,
@@ -46,7 +48,7 @@ export default function TermsOfService() {
         will be governed by a separate written agreement.
       </Typography>
 
-      <Typography component="h2">No Warranties</Typography>
+      <Typography {...headerProps}>No Warranties</Typography>
 
       <Typography>
         This website and its content are provided "as is" and "as available"
@@ -55,7 +57,7 @@ export default function TermsOfService() {
         that the content is complete, accurate, or free of errors.
       </Typography>
 
-      <Typography component="h2">Limitation of Liability</Typography>
+      <Typography {...headerProps}>Limitation of Liability</Typography>
 
       <Typography>
         To the fullest extent permitted by law, Tetra You Betra LLC shall not be
@@ -63,7 +65,7 @@ export default function TermsOfService() {
         damages arising from or related to your use of this website.
       </Typography>
 
-      <Typography component="h2">Third-Party Links</Typography>
+      <Typography {...headerProps}>Third-Party Links</Typography>
 
       <Typography>
         This website may contain links to third-party websites for your
@@ -71,7 +73,7 @@ export default function TermsOfService() {
         privacy practices of those websites.
       </Typography>
 
-      <Typography component="h2">Changes to These Terms</Typography>
+      <Typography {...headerProps}>Changes to These Terms</Typography>
 
       <Typography>
         We may update these Terms of Service from time to time. Continued use of
@@ -79,14 +81,14 @@ export default function TermsOfService() {
         revised terms.
       </Typography>
 
-      <Typography component="h2">Governing Law</Typography>
+      <Typography {...headerProps}>Governing Law</Typography>
 
       <Typography>
         These Terms of Service are governed by the laws of the State of
         Connecticut, without regard to its conflict of law principles.
       </Typography>
 
-      <Typography component="h2">Contact</Typography>
+      <Typography {...headerProps}>Contact</Typography>
 
       <Typography>
         Questions regarding these Terms of Service may be submitted through the

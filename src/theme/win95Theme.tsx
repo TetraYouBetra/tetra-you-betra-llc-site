@@ -60,10 +60,36 @@ export const win95ThemeOptions = {
     borderRadius: 0,
   },
   typography: {
-    fontFamily: `"MS Sans Serif", Tahoma, Arial, sans-serif`,
-    button: {
+    fontFamily: win95FontFamily,
+
+    h1: { fontSize: 28, fontWeight: 700, lineHeight: 1.15, letterSpacing: 0 },
+    h2: { fontSize: 24, fontWeight: 700, lineHeight: 1.2, letterSpacing: 0 },
+    h3: { fontSize: 20, fontWeight: 700, lineHeight: 1.2, letterSpacing: 0 },
+    h4: { fontSize: 18, fontWeight: 700, lineHeight: 1.25, letterSpacing: 0 },
+    h5: { fontSize: 16, fontWeight: 700, lineHeight: 1.3, letterSpacing: 0 },
+    h6: { fontSize: 14, fontWeight: 700, lineHeight: 1.35, letterSpacing: 0 },
+
+    subtitle1: { fontSize: 13, fontWeight: 700, lineHeight: 1.35 },
+    subtitle2: { fontSize: 12, fontWeight: 700, lineHeight: 1.35 },
+
+    body1: { fontSize: 13, fontWeight: 400, lineHeight: 1.45 },
+    body2: { fontSize: 12, fontWeight: 400, lineHeight: 1.4 },
+    caption: { fontSize: 11, fontWeight: 400, lineHeight: 1.3 },
+
+    overline: {
+      fontSize: 11,
+      fontWeight: 700,
+      lineHeight: 1.3,
+      letterSpacing: 0,
       textTransform: 'none',
+    },
+
+    button: {
+      fontSize: 12,
       fontWeight: 400,
+      lineHeight: 1.2,
+      letterSpacing: 0,
+      textTransform: 'none',
     },
   },
   colorSchemes: {
@@ -103,6 +129,101 @@ export const win95ThemeOptions = {
     },
   },
   components: {
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          fontFamily: win95FontFamily,
+        },
+
+        h1: {
+          fontSize: 28,
+          fontWeight: 700,
+          lineHeight: 1.15,
+          letterSpacing: 0,
+        },
+
+        h2: {
+          fontSize: 24,
+          fontWeight: 700,
+          lineHeight: 1.2,
+          letterSpacing: 0,
+        },
+
+        h3: {
+          fontSize: 20,
+          fontWeight: 700,
+          lineHeight: 1.2,
+          letterSpacing: 0,
+        },
+
+        h4: {
+          fontSize: 18,
+          fontWeight: 700,
+          lineHeight: 1.25,
+          letterSpacing: 0,
+        },
+
+        h5: {
+          fontSize: 16,
+          fontWeight: 700,
+          lineHeight: 1.3,
+          letterSpacing: 0,
+        },
+
+        h6: {
+          fontSize: 14,
+          fontWeight: 700,
+          lineHeight: 1.35,
+          letterSpacing: 0,
+        },
+
+        subtitle1: {
+          fontSize: 13,
+          fontWeight: 700,
+          lineHeight: 1.35,
+        },
+
+        subtitle2: {
+          fontSize: 12,
+          fontWeight: 700,
+          lineHeight: 1.35,
+        },
+
+        body1: {
+          fontSize: 13,
+          fontWeight: 400,
+          lineHeight: 1.45,
+        },
+
+        body2: {
+          fontSize: 12,
+          fontWeight: 400,
+          lineHeight: 1.4,
+        },
+
+        caption: {
+          fontSize: 11,
+          fontWeight: 400,
+          lineHeight: 1.3,
+        },
+
+        overline: {
+          fontSize: 11,
+          fontWeight: 700,
+          lineHeight: 1.3,
+          letterSpacing: 0,
+          textTransform: 'none',
+        },
+
+        button: {
+          fontSize: 12,
+          fontWeight: 400,
+          lineHeight: 1.2,
+          letterSpacing: 0,
+          textTransform: 'none',
+        },
+      },
+    },
     MuiCssBaseline: {
       styleOverrides: {
         body: {
