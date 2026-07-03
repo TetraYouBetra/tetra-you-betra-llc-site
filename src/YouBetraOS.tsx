@@ -261,7 +261,7 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
       />
       <Desktop tasks={tasks} onTaskOpen={restoreTask} />
       <Box sx={{ marginTop: `${win95TaskBarHeight}px` }}>
-        {tasks.map((task, index) => (
+        {tasks.map((task) => (
           <WindowFrame
             key={task.href}
             task={task}
