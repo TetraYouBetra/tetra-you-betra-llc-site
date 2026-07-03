@@ -31,68 +31,68 @@ const defaultTheme = createTheme();
 const customShadows: Shadows = [...defaultTheme.shadows];
 
 export const brand = {
-  50: 'hsl(210, 100%, 95%)',
-  100: 'hsl(210, 100%, 92%)',
-  200: 'hsl(210, 100%, 80%)',
-  300: 'hsl(210, 100%, 65%)',
-  400: 'hsl(210, 98%, 48%)',
-  500: 'hsl(210, 98%, 42%)',
-  600: 'hsl(210, 98%, 55%)',
-  700: 'hsl(210, 100%, 35%)',
-  800: 'hsl(210, 100%, 16%)',
-  900: 'hsl(210, 100%, 21%)',
+  50: '#c7d8ff',
+  100: '#a6c0ff',
+  200: '#7da5ff',
+  300: '#5b8cff',
+  400: '#2f6cff',
+  500: '#0000aa', // Active title bar
+  600: '#000080', // Classic Win95 blue
+  700: '#000066',
+  800: '#000044',
+  900: '#000022',
 };
 
 export const gray = {
-  50: 'hsl(220, 35%, 97%)',
-  100: 'hsl(220, 30%, 94%)',
-  200: 'hsl(220, 20%, 88%)',
-  300: 'hsl(220, 20%, 80%)',
-  400: 'hsl(220, 20%, 65%)',
-  500: 'hsl(220, 20%, 42%)',
-  600: 'hsl(220, 20%, 35%)',
-  700: 'hsl(220, 20%, 25%)',
-  800: 'hsl(220, 30%, 6%)',
-  900: 'hsl(220, 35%, 3%)',
+  50: '#ffffff',
+  100: '#dfdfdf',
+  200: '#c0c0c0', // Window face
+  300: '#b0b0b0',
+  400: '#808080', // Shadow
+  500: '#606060',
+  600: '#404040',
+  700: '#202020',
+  800: '#101010',
+  900: '#000000',
 };
 
 export const green = {
-  50: 'hsl(120, 80%, 98%)',
-  100: 'hsl(120, 75%, 94%)',
-  200: 'hsl(120, 75%, 87%)',
-  300: 'hsl(120, 61%, 77%)',
-  400: 'hsl(120, 44%, 53%)',
-  500: 'hsl(120, 59%, 30%)',
-  600: 'hsl(120, 70%, 25%)',
-  700: 'hsl(120, 75%, 16%)',
-  800: 'hsl(120, 84%, 10%)',
-  900: 'hsl(120, 87%, 6%)',
-};
-
-export const orange = {
-  50: 'hsl(45, 100%, 97%)',
-  100: 'hsl(45, 92%, 90%)',
-  200: 'hsl(45, 94%, 80%)',
-  300: 'hsl(45, 90%, 65%)',
-  400: 'hsl(45, 90%, 40%)',
-  500: 'hsl(45, 90%, 35%)',
-  600: 'hsl(45, 91%, 25%)',
-  700: 'hsl(45, 94%, 20%)',
-  800: 'hsl(45, 95%, 16%)',
-  900: 'hsl(45, 93%, 12%)',
+  50: '#d8ffd8',
+  100: '#b6ffb6',
+  200: '#8fff8f',
+  300: '#5cff5c',
+  400: '#00aa00',
+  500: '#008000',
+  600: '#006600',
+  700: '#004400',
+  800: '#003300',
+  900: '#001100',
 };
 
 export const red = {
-  50: 'hsl(0, 100%, 97%)',
-  100: 'hsl(0, 92%, 90%)',
-  200: 'hsl(0, 94%, 80%)',
-  300: 'hsl(0, 90%, 65%)',
-  400: 'hsl(0, 90%, 40%)',
-  500: 'hsl(0, 90%, 30%)',
-  600: 'hsl(0, 91%, 25%)',
-  700: 'hsl(0, 94%, 18%)',
-  800: 'hsl(0, 95%, 12%)',
-  900: 'hsl(0, 93%, 6%)',
+  50: '#ffe0e0',
+  100: '#ffc0c0',
+  200: '#ff9d9d',
+  300: '#ff6b6b',
+  400: '#ff0000',
+  500: '#cc0000',
+  600: '#990000',
+  700: '#660000',
+  800: '#440000',
+  900: '#220000',
+};
+
+export const orange = {
+  50: '#fff2d8',
+  100: '#ffe0aa',
+  200: '#ffd27a',
+  300: '#ffbb44',
+  400: '#ffaa00',
+  500: '#cc8800',
+  600: '#996600',
+  700: '#664400',
+  800: '#442c00',
+  900: '#221500',
 };
 
 export const getDesignTokens = (mode: PaletteMode) => {
@@ -165,13 +165,19 @@ export const getDesignTokens = (mode: PaletteMode) => {
       background: {
         default: 'hsl(0, 0%, 99%)',
         paper: 'hsl(220, 35%, 97%)',
-        ...(mode === 'dark' && { default: gray[900], paper: 'hsl(220, 30%, 7%)' }),
+        ...(mode === 'dark' && {
+          default: gray[900],
+          paper: 'hsl(220, 30%, 7%)',
+        }),
       },
       text: {
         primary: gray[800],
         secondary: gray[600],
         warning: orange[400],
-        ...(mode === 'dark' && { primary: 'hsl(0, 0%, 100%)', secondary: gray[400] }),
+        ...(mode === 'dark' && {
+          primary: 'hsl(0, 0%, 100%)',
+          secondary: gray[400],
+        }),
       },
       action: {
         hover: alpha(gray[200], 0.2),
@@ -273,8 +279,8 @@ export const colorSchemes = {
       },
       divider: alpha(gray[300], 0.4),
       background: {
-        default: 'hsl(0, 0%, 99%)',
-        paper: 'hsl(220, 35%, 97%)',
+        default: '#008080', // desktop teal
+        paper: '#c0c0c0', // window face
       },
       text: {
         primary: gray[800],
@@ -323,8 +329,8 @@ export const colorSchemes = {
       },
       divider: alpha(gray[700], 0.6),
       background: {
-        default: gray[900],
-        paper: 'hsl(220, 30%, 7%)',
+        default: '#008080', // desktop teal
+        paper: '#c0c0c0', // window face
       },
       text: {
         primary: 'hsl(0, 0%, 100%)',
