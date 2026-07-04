@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import AppTheme from './theme/AppTheme';
 import AppAppBar from './components/AppAppBar';
@@ -14,7 +14,8 @@ import ScrollViewport from './components/ScrollViewport';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsOfService from './components/TermsOfService';
 import iconHero from './assets/Chicago95/icons/32/application-default-icon.png';
-import iconAbout from './assets/Chicago95/icons/32/system-help.png';
+import iconAboutMe from './assets/Chicago95/icons/32/emblem-web.png';
+import iconFooter from './assets/Chicago95/icons/32/system-help.png';
 import iconServices from './assets/Chicago95/icons/32/emblem-system.png';
 import iconTestimonials from './assets/Chicago95/icons/32/stock_people.png';
 import iconEngagementOptions from './assets/Chicago95/icons/32/folder-documents.png';
@@ -45,11 +46,7 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
       href: '#welcome',
       icon: iconHero,
       initialFocused: true,
-      component: (
-        <ScrollViewport>
-          <Hero />
-        </ScrollViewport>
-      ),
+      component: <Hero />,
       open: true,
       minimized: false,
       maximized: false,
@@ -57,12 +54,12 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
         x: 64 + 1 * 24,
         y: 64 + 1 * 24,
       },
-      defaultSize: { width: 700, height: 500 },
+      defaultSize: { width: 700, height: 'auto' },
     },
     {
-      label: 'About.exe',
+      label: 'About Me.html',
       href: '#about',
-      icon: iconAbout,
+      icon: iconAboutMe,
       component: (
         <ScrollViewport>
           <About />
@@ -81,11 +78,7 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
       label: 'Services.exe',
       href: '#services',
       icon: iconServices,
-      component: (
-        <ScrollViewport>
-          <Services />
-        </ScrollViewport>
-      ),
+      component: <Services />,
       open: false,
       minimized: false,
       maximized: false,
@@ -93,17 +86,13 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
         x: 64 + 3 * 24,
         y: 64 + 3 * 24,
       },
-      defaultSize: { width: 700, height: 500 },
+      defaultSize: { width: 700, height: 'auto' },
     },
     {
       label: 'Testimonials.exe',
       href: '#testimonials',
       icon: iconTestimonials,
-      component: (
-        <ScrollViewport>
-          <Testimonials />
-        </ScrollViewport>
-      ),
+      component: <Testimonials />,
       open: false,
       minimized: false,
       maximized: false,
@@ -111,7 +100,7 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
         x: 64 + 4 * 24,
         y: 64 + 4 * 24,
       },
-      defaultSize: { width: 700, height: 500 },
+      defaultSize: { width: 700, height: 'auto' },
     },
     {
       label: 'Engagement Options.exe',
@@ -152,12 +141,8 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
     {
       label: 'Footer.exe',
       href: '#footer',
-      icon: iconContact,
-      component: (
-        <ScrollViewport>
-          <Footer />
-        </ScrollViewport>
-      ),
+      icon: iconFooter,
+      component: <Footer />,
       open: false,
       minimized: false,
       maximized: false,
@@ -165,7 +150,7 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
         x: 64 + 7 * 24,
         y: 64 + 7 * 24,
       },
-      defaultSize: { width: 700, height: 500 },
+      defaultSize: { width: 700, height: 'auto' },
     },
     {
       label: 'Privacy Policy.rtf',
@@ -206,35 +191,62 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
       mobileDialog: true,
     },
   ]);
+  const taskHrefsRef = useRef<Set<string>>(new Set());
+  const lastHandledHashRef = useRef<string | null>(null);
+
   const [taskStack, setTaskStack] = useState<string[]>(['#welcome']);
 
-  const patchTask = (href: string, patch: Partial<Task> = {}) => {
+  const patchTask = useCallback((href: string, patch: Partial<Task> = {}) => {
     setTasks((current) =>
       current.map((task) => (task.href === href ? { ...task, ...patch } : task))
     );
-  };
+  }, []);
 
-  const bringToFront = (href: string) => {
+  const bringToFront = useCallback((href: string) => {
     setActiveTask(href);
 
     setTaskStack((current) => [
       ...current.filter((taskHref) => taskHref !== href),
       href,
     ]);
-  };
+  }, []);
 
   const focusTask = (href: string) => {
     setActiveTask(href);
   };
 
-  const restoreTask = (href: string) => {
-    patchTask(href, {
-      open: true,
-      minimized: false,
-    });
+  const restoreTask = useCallback(
+    (href: string) => {
+      patchTask(href, {
+        open: true,
+        minimized: false,
+      });
 
-    bringToFront(href);
-  };
+      bringToFront(href);
+    },
+    [bringToFront, patchTask]
+  );
+
+  useEffect(() => {
+    taskHrefsRef.current = new Set(tasks.map((task) => task.href));
+  }, [tasks]);
+
+  const launchFromHash = useCallback(() => {
+    const rawHash = window.location.hash || '#welcome';
+    const href = taskHrefsRef.current.has(rawHash) ? rawHash : '#welcome';
+
+    if (lastHandledHashRef.current === href) return;
+
+    lastHandledHashRef.current = href;
+    restoreTask(href);
+  }, [restoreTask]);
+
+  useEffect(() => {
+    launchFromHash();
+
+    window.addEventListener('hashchange', launchFromHash);
+    return () => window.removeEventListener('hashchange', launchFromHash);
+  }, [launchFromHash]);
 
   const getTaskZIndex = (href: string) => {
     const index = taskStack.indexOf(href);
@@ -250,6 +262,34 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
     bringToFront(task.href);
   };
 
+  const clearHashIfCurrent = (href: string) => {
+    if (window.location.hash !== href) return;
+
+    lastHandledHashRef.current = null;
+
+    history.replaceState(
+      null,
+      '',
+      `${window.location.pathname}${window.location.search}`
+    );
+  };
+
+  const openTaskFromUi = useCallback(
+    (href: string) => {
+      if (window.location.hash !== href) {
+        lastHandledHashRef.current = href;
+        history.pushState(null, '', href);
+      }
+
+      restoreTask(href);
+    },
+    [restoreTask]
+  );
+
+  const lastMobileInlineTaskHref = [...tasks]
+    .reverse()
+    .find((task) => !task.mobileDialog)?.href;
+
   return (
     <AppTheme {...props}>
       <CssBaseline enableColorScheme />
@@ -257,9 +297,9 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
       <AppAppBar
         tasks={tasks}
         activeTask={activeTask}
-        onTaskClick={restoreTask}
+        onTaskClick={openTaskFromUi}
       />
-      <Desktop tasks={tasks} onTaskOpen={restoreTask} />
+      <Desktop tasks={tasks} onTaskOpen={openTaskFromUi} />
       <Box sx={{ marginTop: `${win95TaskBarHeight}px` }}>
         {tasks.map((task) => (
           <WindowFrame
@@ -269,6 +309,8 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
             zIndex={getTaskZIndex(task.href)}
             onFocusWindow={() => focusWindow(task)}
             onClose={() => {
+              clearHashIfCurrent(task.href);
+
               patchTask(task.href, {
                 open: false,
                 minimized: false,
@@ -301,6 +343,7 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
 
               bringToFront(task.href);
             }}
+            isLastMobileInlineTask={task.href === lastMobileInlineTaskHref}
           >
             {task.component}
           </WindowFrame>

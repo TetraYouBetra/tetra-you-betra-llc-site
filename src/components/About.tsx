@@ -84,8 +84,6 @@ export default function About() {
     <Container
       id="about"
       sx={{
-        pt: { xs: 1, sm: 2 },
-        pb: { xs: 1, sm: 2 },
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',

@@ -75,14 +75,7 @@ export default function Contact() {
   }
 
   return (
-    <Container
-      id="contact"
-      maxWidth="sm"
-      sx={{
-        pt: { xs: 1, sm: 2 },
-        pb: { xs: 1, sm: 2 },
-      }}
-    >
+    <Container id="contact" maxWidth="sm" sx={{}}>
       <Stack spacing={4}>
         <Box sx={{ textAlign: 'center' }}>
           <Typography component="h2" variant="h4" gutterBottom>

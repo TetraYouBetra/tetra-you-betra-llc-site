@@ -30,7 +30,7 @@ export default function ScrollViewport({
         minHeight: 0,
         minWidth: 0,
         overflow: 'auto',
-        backgroundColor: win95.light,
+        backgroundColor: win95.white,
         color: win95.text,
         boxShadow: sunken,
         p: '2px',

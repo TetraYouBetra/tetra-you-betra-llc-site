@@ -229,7 +229,7 @@ export default function AppAppBar({
                 </Typography>
               </Button>
             ) : (
-              <Box key={task.href} />
+              <Box key={task.href} sx={{ display: 'none' }} />
             )
           )}
         </Box>
