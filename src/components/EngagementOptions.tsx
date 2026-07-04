@@ -38,8 +38,6 @@ export default function EngagementOptions() {
     <Container
       id="engagement-options"
       sx={{
-        pt: { xs: 1, sm: 2 },
-        pb: { xs: 1, sm: 2 },
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',

@@ -347,7 +347,7 @@ export default function Desktop({ tasks, onTaskOpen }: DesktopProps) {
                 outline: isActive ? `1px dotted ${win95.white}` : 'none',
               }}
             >
-              {task.label.replace(/\.exe$/i, '')}
+              {task.label.replace(/\.[^.]+$/i, '')}{' '}
             </Typography>
           </Box>
         );

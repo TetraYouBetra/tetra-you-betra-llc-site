@@ -52,7 +52,7 @@ export const titleBarInactive = {
 };
 
 export const win95FontFamily = `"MS Sans Serif", Tahoma, Arial, sans-serif`;
-export const aboutFontFamily = `"Comic Sans MS", "Comic Sans", cursive`;
+export const aboutFontFamily = `"Comic Sans MS", "Comic Sans", "Comic Neue", cursive`;
 export const win95TitleBarHeight = 18;
 export const win95TaskBarHeight = 34;
 
@@ -235,7 +235,16 @@ export const win95ThemeOptions = {
         },
       },
     },
-
+    MuiContainer: {
+      defaultProps: {
+        disableGutters: true,
+      },
+      styleOverrides: {
+        root: {
+          padding: 8,
+        },
+      },
+    },
     MuiPaper: {
       defaultProps: {
         elevation: 0,
@@ -322,18 +331,20 @@ export const win95ThemeOptions = {
           boxShadow: raised,
           textTransform: 'none',
           fontWeight: 400,
-          '&:hover': {
-            backgroundColor: win95.face,
-            boxShadow: raised,
-          },
+          // '&:hover': {
+          //   backgroundColor: win95.face,
+          //   boxShadow: raised,
+          // },
           '&:active': {
             boxShadow: sunken,
             transform: 'translate(1px, 1px)',
           },
           '&.Mui-disabled': {
-            color: win95.mid,
+            color: win95.shadow,
             backgroundColor: win95.face,
             boxShadow: raised,
+            opacity: 1,
+            textShadow: `1px 1px 0 ${win95.light}`,
           },
         },
         contained: {
@@ -446,6 +457,134 @@ export const win95ThemeOptions = {
           fontWeight: 700,
           fontFamily: win95FontFamily,
           userSelect: 'none',
+        },
+      },
+    },
+    MuiDivider: {
+      styleOverrides: {
+        root: {
+          border: 'none',
+          height: 2,
+          margin: '6px 0',
+          backgroundColor: 'transparent',
+          boxShadow: `
+        inset 0 1px 0 ${win95.shadow},
+        inset 0 -1px 0 ${win95.highlight}
+      `,
+        },
+
+        vertical: {
+          width: 2,
+          height: 'auto',
+          margin: '0 6px',
+          boxShadow: `
+        inset 1px 0 0 ${win95.shadow},
+        inset -1px 0 0 ${win95.highlight}
+      `,
+        },
+
+        withChildren: {
+          '&::before, &::after': {
+            borderTop: 'none',
+            height: 2,
+            boxShadow: `
+          inset 0 1px 0 ${win95.shadow},
+          inset 0 -1px 0 ${win95.highlight}
+        `,
+          },
+        },
+      },
+    },
+
+    MuiTabs: {
+      defaultProps: {
+        textColor: 'inherit',
+        indicatorColor: 'primary',
+      },
+      styleOverrides: {
+        root: {
+          minHeight: 26,
+          backgroundColor: win95.face,
+          borderBottom: `1px solid ${win95.darkShadow}`,
+        },
+        indicator: {
+          display: 'none',
+        },
+
+        scrollButtons: {
+          width: 22,
+          minHeight: 22,
+          color: win95.text,
+          backgroundColor: win95.face,
+          boxShadow: raised,
+          '&.Mui-disabled': {
+            color: win95.disabledText,
+            opacity: 1,
+          },
+          '&:active': {
+            boxShadow: pressed,
+          },
+        },
+      },
+    },
+
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          minHeight: 24,
+          height: 24,
+          minWidth: 72,
+          padding: '2px 10px',
+          marginRight: -1,
+          color: win95.text,
+          backgroundColor: win95.face,
+          border: 'none',
+          boxShadow: raised,
+          fontFamily: win95FontFamily,
+          fontSize: 12,
+          fontWeight: 400,
+          lineHeight: 1,
+          textTransform: 'none',
+
+          '&:hover': {
+            backgroundColor: win95.face,
+          },
+
+          '&.Mui-selected': {
+            position: 'relative',
+            zIndex: 1,
+            height: 27,
+            minHeight: 27,
+            paddingTop: '3px',
+            paddingBottom: '3px',
+            backgroundColor: win95.face,
+            color: win95.text,
+            boxShadow: `
+          inset 1px 1px 0 ${win95.highlight},
+          inset 2px 2px 0 ${win95.light},
+          inset -1px 0 0 ${win95.darkShadow}
+        `,
+
+            '&::after': {
+              content: '""',
+              position: 'absolute',
+              left: 2,
+              right: 2,
+              bottom: -1,
+              height: 2,
+              backgroundColor: win95.face,
+            },
+          },
+
+          '&.Mui-disabled': {
+            color: win95.disabledText,
+            opacity: 1,
+          },
+
+          '&.Mui-focusVisible': {
+            outline: `1px dotted ${win95.black}`,
+            outlineOffset: -4,
+          },
         },
       },
     },

@@ -30,6 +30,7 @@ type WindowFrameProps = {
   onClose?: () => void;
   onMinimize?: () => void;
   onMaximize?: () => void;
+  isLastMobileInlineTask?: boolean;
   sx?: SxProps<Theme>;
 };
 
@@ -42,6 +43,7 @@ export default function WindowFrame({
   onClose,
   onMinimize,
   onMaximize,
+  isLastMobileInlineTask = false,
   sx,
 }: WindowFrameProps) {
   const {
@@ -99,24 +101,28 @@ export default function WindowFrame({
     setRenderVisible(shouldBeVisible);
   }, [shouldBeVisible, pendingExitAction]);
 
+  const titleBarRef = React.useRef<HTMLDivElement | null>(null);
   React.useEffect(() => {
-    if (!isMobile || mobileDialog || !frameRef.current) return;
+    if (!isMobile || mobileDialog || !titleBarRef.current) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && entry.intersectionRatio >= 0.45) {
+        if (entry.isIntersecting) {
           onFocusWindow();
         }
       },
       {
-        threshold: [0.45],
-        rootMargin: `-${TOP_BAR_HEIGHT}px 0px -35% 0px`,
+        threshold: 0,
+        rootMargin: isLastMobileInlineTask
+          ? `-${TOP_BAR_HEIGHT}px 0px 0px 0px`
+          : `-${TOP_BAR_HEIGHT}px 0px -55% 0px`,
       }
     );
 
-    observer.observe(frameRef.current);
+    observer.observe(titleBarRef.current);
+
     return () => observer.disconnect();
-  }, [isMobile, mobileDialog, onFocusWindow]);
+  }, [isMobile, mobileDialog, isLastMobileInlineTask, onFocusWindow]);
 
   React.useEffect(() => {
     if (isMobile) return;
@@ -299,7 +305,9 @@ export default function WindowFrame({
         sx={rootSx}
         style={frameStyle}
       >
+        {/* title bar */}
         <Box
+          ref={titleBarRef}
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
