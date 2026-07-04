@@ -8,6 +8,12 @@ import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import { useErrorDialog } from '../ErrorBoundary';
+import nameIcon from '../assets/Chicago95/icons/32/stock_person.png';
+import emailIcon from '../assets/Chicago95/icons/32/mail-unread.png';
+import companyIcon from '../assets/Chicago95/icons/32/accessories-dictionary.png';
+import phoneIcon from '../assets/Chicago95/icons/32/network-wireless.png';
+import projectIcon from '../assets/Chicago95/icons/32/abiword.png';
 
 const API_URL = 'https://api.tetrayoubetra.com';
 
@@ -31,7 +37,8 @@ export default function Contact() {
   const [form, setForm] = useState<ContactForm>(initialForm);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [error, setError] = useState('');
+
+  const { showError } = useErrorDialog();
 
   function updateField<K extends keyof ContactForm>(
     key: K,
@@ -47,7 +54,6 @@ export default function Contact() {
     event.preventDefault();
 
     setLoading(true);
-    setError('');
     setSuccess(false);
 
     try {
@@ -68,7 +74,7 @@ export default function Contact() {
       setSuccess(true);
       setForm(initialForm);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong.');
+      showError(err instanceof Error ? err.message : 'Something went wrong.');
     } finally {
       setLoading(false);
     }
@@ -90,46 +96,56 @@ export default function Contact() {
 
         <Box component="form" onSubmit={handleSubmit}>
           <Stack spacing={2}>
-            <TextField
-              label="Name"
-              required
-              fullWidth
-              value={form.name}
-              onChange={(e) => updateField('name', e.target.value)}
-            />
+            <ContactField label="Name" icon={nameIcon}>
+              <TextField
+                placeholder="Name"
+                required
+                fullWidth
+                value={form.name}
+                onChange={(e) => updateField('name', e.target.value)}
+              />
+            </ContactField>
 
-            <TextField
-              label="Email"
-              type="email"
-              required
-              fullWidth
-              value={form.email}
-              onChange={(e) => updateField('email', e.target.value)}
-            />
+            <ContactField label="Email" icon={emailIcon}>
+              <TextField
+                placeholder="Email"
+                type="email"
+                required
+                fullWidth
+                value={form.email}
+                onChange={(e) => updateField('email', e.target.value)}
+              />
+            </ContactField>
 
-            <TextField
-              label="Company"
-              fullWidth
-              value={form.company}
-              onChange={(e) => updateField('company', e.target.value)}
-            />
+            <ContactField label="Company" icon={companyIcon}>
+              <TextField
+                placeholder="Company"
+                fullWidth
+                value={form.company}
+                onChange={(e) => updateField('company', e.target.value)}
+              />
+            </ContactField>
 
-            <TextField
-              label="Phone"
-              fullWidth
-              value={form.phone}
-              onChange={(e) => updateField('phone', e.target.value)}
-            />
+            <ContactField label="Phone" icon={phoneIcon}>
+              <TextField
+                placeholder="Phone"
+                fullWidth
+                value={form.phone}
+                onChange={(e) => updateField('phone', e.target.value)}
+              />
+            </ContactField>
 
-            <TextField
-              label="Project Details"
-              required
-              fullWidth
-              multiline
-              minRows={5}
-              value={form.message}
-              onChange={(e) => updateField('message', e.target.value)}
-            />
+            <ContactField label="Project Details" icon={projectIcon}>
+              <TextField
+                placeholder="Project Details"
+                required
+                fullWidth
+                multiline
+                minRows={5}
+                value={form.message}
+                onChange={(e) => updateField('message', e.target.value)}
+              />
+            </ContactField>
 
             {success && (
               <Alert severity="success">
@@ -137,8 +153,6 @@ export default function Contact() {
                 touch soon.
               </Alert>
             )}
-
-            {error && <Alert severity="error">{error}</Alert>}
 
             <Button
               type="submit"
@@ -157,5 +171,60 @@ export default function Contact() {
         </Box>
       </Stack>
     </Container>
+  );
+}
+
+type ContactFieldProps = {
+  icon?: string;
+  label: string;
+  children: React.ReactNode;
+};
+
+function ContactField({ icon, label, children }: ContactFieldProps) {
+  return (
+    <Box
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: {
+          xs: '1fr',
+          sm: '150px minmax(0, 1fr)',
+        },
+        gap: {
+          xs: '4px',
+          sm: 2,
+        },
+        alignItems: 'start',
+      }}
+    >
+      <Typography
+        component="label"
+        variant="body1"
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '6px',
+          minHeight: 30,
+          fontSize: 13,
+        }}
+      >
+        {icon && (
+          <Box
+            component="img"
+            src={icon}
+            alt=""
+            sx={{
+              width: 16,
+              height: 16,
+              imageRendering: 'pixelated',
+              flexShrink: 0,
+            }}
+          />
+        )}
+
+        {label}
+      </Typography>
+
+      {children}
+    </Box>
   );
 }
