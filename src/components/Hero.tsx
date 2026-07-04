@@ -67,7 +67,7 @@ export default function Hero() {
           <Button href="#about" autoFocus sx={{ px: 3 }}>
             {'Next >'}
           </Button>
-          <Button href="#footer" sx={{ marginLeft: 2, px: 3 }}>
+          <Button disabled sx={{ marginLeft: 2, px: 3 }}>
             Cancel
           </Button>
         </Box>

@@ -380,26 +380,6 @@ export const win95ThemeOptions = {
         },
       },
     },
-
-    MuiOutlinedInput: {
-      styleOverrides: {
-        root: {
-          backgroundColor: win95.light,
-          color: win95.text,
-          border: 'none',
-          boxShadow: sunken,
-          padding: '6px 8px',
-          '&.Mui-focused': {
-            outline: '1px dotted black',
-            outlineOffset: -4,
-          },
-        },
-        notchedOutline: {
-          border: 'none',
-        },
-      },
-    },
-
     MuiSelect: {
       styleOverrides: {
         root: {
@@ -585,6 +565,84 @@ export const win95ThemeOptions = {
             outline: `1px dotted ${win95.black}`,
             outlineOffset: -4,
           },
+        },
+      },
+    },
+    MuiTextField: {
+      defaultProps: {
+        variant: 'outlined',
+        size: 'small',
+      },
+    },
+
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          position: 'static',
+          transform: 'none',
+          color: win95.mid,
+          fontSize: 13,
+          lineHeight: 1.2,
+          fontFamily: win95FontFamily,
+          marginBottom: 0,
+
+          '&.Mui-focused': {
+            color: win95.mid,
+          },
+
+          '&.Mui-error': {
+            color: win95.error,
+          },
+
+          '&.Mui-disabled': {
+            color: win95.disabledText,
+            textShadow: `1px 1px 0 ${win95.light}`,
+          },
+        },
+
+        shrink: {
+          transform: 'none',
+        },
+      },
+    },
+
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          backgroundColor: win95.white,
+          color: win95.text,
+          border: 'none',
+          boxShadow: sunken,
+          padding: 0,
+
+          '&.Mui-focused': {
+            outline: 'none',
+          },
+
+          '&.Mui-disabled': {
+            backgroundColor: win95.face,
+            color: win95.disabledText,
+            boxShadow: sunken,
+          },
+        },
+
+        input: {
+          padding: '6px 8px',
+          fontSize: 13,
+          lineHeight: 1.2,
+
+          '&::placeholder': {
+            color: win95.mid,
+            opacity: 1,
+          },
+        },
+
+        multiline: {
+          padding: 0,
+        },
+
+        notchedOutline: {
+          border: 'none',
         },
       },
     },

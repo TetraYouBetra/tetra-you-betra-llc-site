@@ -1,5 +1,4 @@
 import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
@@ -81,7 +80,7 @@ export default function About() {
   );
 
   return (
-    <Container
+    <Box
       id="about"
       sx={{
         display: 'flex',
@@ -90,13 +89,18 @@ export default function About() {
         backgroundColor: 'background.paper',
         backgroundImage: `url(${cloudsBg})`,
         backgroundRepeat: 'repeat',
+        width: '100%',
+        minHeight: '100%',
+        boxSizing: 'border-box',
+        p: 2,
       }}
     >
       <Box
         sx={{
           width: { xs: '95%', md: '70%' },
           backgroundColor: '#bbccff',
-          padding: 2,
+          p: 2,
+          boxSizing: 'border-box',
         }}
       >
         <Stack
@@ -235,6 +239,6 @@ export default function About() {
           ))}
         </Grid>
       </Box>
-    </Container>
+    </Box>
   );
 }

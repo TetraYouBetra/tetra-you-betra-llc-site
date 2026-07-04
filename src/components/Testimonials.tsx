@@ -2,7 +2,6 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import Collapse from '@mui/material/Collapse';
 import ScrollViewport from './ScrollViewport';
 import { sunken, win95 } from '../theme/win95Theme';
 import logo32px from '../assets/logo_32px.png';
@@ -14,12 +13,8 @@ import mailOpenIcon from '../assets/Chicago95/icons/32/mail-read.png';
 import sanjayAvatar from '../assets/Headshots/sanjay.png';
 import shahbazAvatar from '../assets/Headshots/shahbaz.png';
 import kelynnAvatar from '../assets/Headshots/kelynn.png';
-
-type TreeBranch = {
-  hasParentLine?: boolean;
-  hasElbow?: boolean;
-  isLastChild?: boolean;
-};
+import TestimonialTree, { TreeNode } from './TestimonialTree';
+import { useMediaQuery, useTheme } from '@mui/material';
 
 type Testimonial = {
   id: string;
@@ -64,22 +59,9 @@ She delivered her projects without problems, always being sure that all the proc
   },
 ];
 
-const placeholderIcons = {
-  root: {
-    icon: logo32px,
-    iconActive: logo32px,
-  },
-  folder: {
-    icon: folderIcon,
-    iconActive: folderOpenIcon,
-  },
-  testimonial: {
-    icon: mailIcon,
-    iconActive: mailOpenIcon,
-  },
-};
-
 export default function Testimonials() {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [selectedId, setSelectedId] = React.useState<string | null>(null);
   const [expanded, setExpanded] = React.useState<Record<string, boolean>>({
     root: true,
@@ -89,15 +71,53 @@ export default function Testimonials() {
   });
 
   const selected = testimonials.find((item) => item.id === selectedId) ?? null;
-  const clients = testimonials.filter((item) => item.group === 'clients');
-  const colleagues = testimonials.filter((item) => item.group === 'colleagues');
 
-  const toggleExpanded = (id: string) => {
-    setExpanded((current) => ({
-      ...current,
-      [id]: !current[id],
-    }));
-  };
+  const testimonialTree = {
+    id: 'root',
+    label: 'Tetra You Betra LLC',
+    icon: logo32px,
+    activeIcon: logo32px,
+    children: [
+      {
+        id: 'testimonials',
+        label: 'Testimonials',
+        icon: folderIcon,
+        activeIcon: folderOpenIcon,
+        children: [
+          {
+            id: 'clients',
+            label: 'Clients',
+            icon: folderIcon,
+            activeIcon: folderOpenIcon,
+            children: testimonials
+              .filter((item) => item.group === 'clients')
+              .map((item) => ({
+                id: `testimonial-${item.id}`,
+                label: item.name,
+                icon: mailIcon,
+                activeIcon: mailOpenIcon,
+                testimonialId: item.id,
+              })),
+          },
+          {
+            id: 'colleagues',
+            label: 'Colleagues',
+            icon: folderIcon,
+            activeIcon: folderOpenIcon,
+            children: testimonials
+              .filter((item) => item.group === 'colleagues')
+              .map((item) => ({
+                id: `testimonial-${item.id}`,
+                label: item.name,
+                icon: mailIcon,
+                activeIcon: mailOpenIcon,
+                testimonialId: item.id,
+              })),
+          },
+        ],
+      },
+    ],
+  } satisfies TreeNode;
 
   return (
     <Container id="testimonials">
@@ -127,102 +147,18 @@ export default function Testimonials() {
           }}
         >
           <ScrollViewport>
-            <TreeDirectory
-              id="root"
-              label="Tetra You Betra LLC"
-              level={0}
-              expanded={expanded.root}
-              icon={placeholderIcons.root.icon}
-              iconActive={placeholderIcons.root.iconActive}
-              onClick={() => toggleExpanded('root')}
+            <TestimonialTree
+              tree={testimonialTree}
+              selectedId={selectedId}
+              expanded={expanded}
+              onSelect={setSelectedId}
+              onToggle={(id) =>
+                setExpanded((current) => ({
+                  ...current,
+                  [id]: !current[id],
+                }))
+              }
             />
-
-            <Collapse in={expanded.root} timeout="auto" unmountOnExit>
-              <TreeDirectory
-                id="testimonials"
-                label="Testimonials"
-                level={1}
-                expanded={expanded.testimonials}
-                icon={placeholderIcons.folder.icon}
-                iconActive={placeholderIcons.folder.iconActive}
-                onClick={() => toggleExpanded('testimonials')}
-                branch={{
-                  hasParentLine: true,
-                  hasElbow: true,
-                  isLastChild: true,
-                }}
-              />
-
-              <Collapse in={expanded.testimonials} timeout="auto" unmountOnExit>
-                <TreeDirectory
-                  id="clients"
-                  label="Clients"
-                  level={2}
-                  expanded={expanded.clients}
-                  icon={placeholderIcons.folder.icon}
-                  iconActive={placeholderIcons.folder.iconActive}
-                  onClick={() => toggleExpanded('clients')}
-                  branch={{ hasParentLine: true, hasElbow: true }}
-                />
-
-                <Collapse in={expanded.clients} timeout="auto" unmountOnExit>
-                  {clients.length === 0 ? (
-                    <TreeEmpty level={3} label="No client testimonials yet" />
-                  ) : (
-                    clients.map((testimonial, index) => (
-                      <TreeLeaf
-                        key={testimonial.id}
-                        level={3}
-                        label={testimonial.name}
-                        selected={selectedId === testimonial.id}
-                        icon={placeholderIcons.testimonial.icon}
-                        iconActive={placeholderIcons.testimonial.iconActive}
-                        onClick={() => setSelectedId(testimonial.id)}
-                        branch={{
-                          hasParentLine: true,
-                          hasElbow: true,
-                          isLastChild: index === clients.length - 1,
-                        }}
-                      />
-                    ))
-                  )}
-                </Collapse>
-
-                <TreeDirectory
-                  id="colleagues"
-                  label="Colleagues"
-                  level={2}
-                  expanded={expanded.colleagues}
-                  icon={placeholderIcons.folder.icon}
-                  iconActive={placeholderIcons.folder.iconActive}
-                  onClick={() => toggleExpanded('colleagues')}
-                  branch={{
-                    hasParentLine: true,
-                    hasElbow: true,
-                    isLastChild: true,
-                  }}
-                />
-
-                <Collapse in={expanded.colleagues} timeout="auto" unmountOnExit>
-                  {colleagues.map((testimonial, index) => (
-                    <TreeLeaf
-                      key={testimonial.id}
-                      level={3}
-                      label={testimonial.name}
-                      selected={selectedId === testimonial.id}
-                      icon={placeholderIcons.testimonial.icon}
-                      iconActive={placeholderIcons.testimonial.iconActive}
-                      onClick={() => setSelectedId(testimonial.id)}
-                      branch={{
-                        hasParentLine: true,
-                        hasElbow: true,
-                        isLastChild: index === colleagues.length - 1,
-                      }}
-                    />
-                  ))}
-                </Collapse>
-              </Collapse>
-            </Collapse>
           </ScrollViewport>
         </Box>
 
@@ -248,7 +184,8 @@ export default function Testimonials() {
                   }}
                 >
                   <Typography variant="body1">
-                    Select a testimonial on the left to view it.
+                    Select a testimonial {isMobile ? 'above' : 'on the left'} to
+                    view it.
                   </Typography>
                 </Box>
               ) : (
@@ -340,198 +277,5 @@ export default function Testimonials() {
         </Box>
       </Box>
     </Container>
-  );
-}
-
-function TreeDirectory({
-  label,
-  level,
-  expanded,
-  icon,
-  iconActive,
-  onClick,
-  branch,
-}: {
-  id: string;
-  label: string;
-  level: number;
-  expanded: boolean;
-  icon: string;
-  iconActive: string;
-  onClick: () => void;
-  branch?: TreeBranch;
-}) {
-  return (
-    <TreeRow
-      label={label}
-      level={level}
-      icon={expanded ? iconActive : icon}
-      selected={false}
-      prefix={expanded ? '▾' : '▸'}
-      onClick={onClick}
-      branch={branch}
-    />
-  );
-}
-
-function TreeLeaf({
-  label,
-  level,
-  selected,
-  icon,
-  iconActive,
-  onClick,
-  branch,
-}: {
-  label: string;
-  level: number;
-  selected: boolean;
-  icon: string;
-  iconActive: string;
-  onClick: () => void;
-  branch?: TreeBranch;
-}) {
-  return (
-    <TreeRow
-      label={label}
-      level={level}
-      icon={selected ? iconActive : icon}
-      selected={selected}
-      prefix=""
-      onClick={onClick}
-      branch={branch}
-    />
-  );
-}
-
-function TreeEmpty({ label, level }: { label: string; level: number }) {
-  return (
-    <Typography
-      sx={{
-        pl: `${level * 18 + 18}px`,
-        py: '2px',
-        fontSize: 12,
-        color: win95.disabledText,
-        textShadow: `1px 1px 0 ${win95.light}`,
-      }}
-    >
-      {label}
-    </Typography>
-  );
-}
-
-function TreeRow({
-  label,
-  level,
-  icon,
-  selected,
-  prefix,
-  onClick,
-  branch,
-}: {
-  label: string;
-  level: number;
-  icon: string;
-  selected: boolean;
-  prefix: string;
-  onClick: () => void;
-  branch?: TreeBranch;
-}) {
-  const branchX = level * 18 - 7;
-
-  return (
-    <Box
-      role="treeitem"
-      aria-selected={selected}
-      onClick={onClick}
-      sx={{
-        position: 'relative',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '4px',
-        minHeight: 22,
-        pl: `${level * 18 + 4}px`,
-        pr: '4px',
-        cursor: 'default',
-        userSelect: 'none',
-        color: win95.text,
-        backgroundColor: selected ? win95.title : 'transparent',
-
-        '&:hover': {
-          cursor: 'pointer',
-          backgroundColor: selected ? win95.title : win95.light,
-        },
-
-        ...(level > 0 &&
-          branch?.hasParentLine && {
-            '&::before': {
-              content: '""',
-              position: 'absolute',
-              left: `${branchX}px`,
-              top: 0,
-              bottom: branch.isLastChild ? '50%' : 0,
-              borderLeft: `1px dotted ${win95.shadow}`,
-            },
-          }),
-
-        ...(level > 0 &&
-          branch?.hasElbow && {
-            '&::after': {
-              content: '""',
-              position: 'absolute',
-              left: `${branchX}px`,
-              top: '50%',
-              width: 13,
-              borderTop: `1px dotted ${win95.shadow}`,
-            },
-          }),
-      }}
-    >
-      <Box
-        component="span"
-        sx={{
-          width: 12,
-          fontSize: 11,
-          lineHeight: 1,
-          color: selected ? win95.titleText : win95.text,
-          position: 'relative',
-          zIndex: 1,
-          backgroundColor: selected ? win95.title : 'transparent',
-        }}
-      >
-        {prefix}
-      </Box>
-
-      <Box
-        component="img"
-        src={icon}
-        alt=""
-        sx={{
-          width: 16,
-          height: 16,
-          imageRendering: 'pixelated',
-          flexShrink: 0,
-          position: 'relative',
-          zIndex: 1,
-        }}
-      />
-
-      <Typography
-        component="span"
-        sx={{
-          fontSize: 12,
-          lineHeight: 1.2,
-          fontWeight: selected ? 700 : 400,
-          color: selected ? win95.titleText : win95.text,
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          position: 'relative',
-          zIndex: 1,
-        }}
-      >
-        {label}
-      </Typography>
-    </Box>
   );
 }

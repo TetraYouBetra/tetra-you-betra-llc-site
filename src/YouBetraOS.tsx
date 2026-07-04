@@ -23,6 +23,7 @@ import iconContact from './assets/Chicago95/icons/32/mail-outbox-old.png';
 import Box from '@mui/material/Box';
 import { win95TaskBarHeight } from './theme/win95Theme';
 import Desktop from './components/Desktop';
+import ErrorBoundary from './ErrorBoundary';
 
 export interface Task {
   label: string;
@@ -32,6 +33,8 @@ export interface Task {
   open: boolean;
   minimized: boolean;
   maximized: boolean;
+  canMaximize?: boolean;
+  canMinimize?: boolean;
   defaultPosition?: { x: number; y: number };
   defaultSize?: { width: number | string; height?: number | string };
   initialFocused?: boolean;
@@ -50,6 +53,7 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
       open: true,
       minimized: false,
       maximized: false,
+      canMinimize: true,
       defaultPosition: {
         x: 64 + 1 * 24,
         y: 64 + 1 * 24,
@@ -68,6 +72,8 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
       open: false,
       minimized: false,
       maximized: false,
+      canMinimize: true,
+      canMaximize: true,
       defaultPosition: {
         x: 64 + 2 * 24,
         y: 64 + 2 * 24,
@@ -82,6 +88,7 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
       open: false,
       minimized: false,
       maximized: false,
+      canMinimize: true,
       defaultPosition: {
         x: 64 + 3 * 24,
         y: 64 + 3 * 24,
@@ -96,6 +103,7 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
       open: false,
       minimized: false,
       maximized: false,
+      canMinimize: true,
       defaultPosition: {
         x: 64 + 4 * 24,
         y: 64 + 4 * 24,
@@ -114,6 +122,7 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
       open: false,
       minimized: false,
       maximized: false,
+      canMinimize: true,
       defaultPosition: {
         x: 64 + 5 * 24,
         y: 64 + 5 * 24,
@@ -124,19 +133,16 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
       label: 'Contact.exe',
       href: '#contact',
       icon: iconContact,
-      component: (
-        <ScrollViewport>
-          <Contact />
-        </ScrollViewport>
-      ),
+      component: <Contact />,
       open: false,
       minimized: false,
       maximized: false,
+      canMinimize: true,
       defaultPosition: {
         x: 64 + 6 * 24,
         y: 64 + 6 * 24,
       },
-      defaultSize: { width: 700, height: 500 },
+      defaultSize: { width: 700, height: 'auto' },
     },
     {
       label: 'Footer.exe',
@@ -146,6 +152,7 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
       open: false,
       minimized: false,
       maximized: false,
+      canMinimize: true,
       defaultPosition: {
         x: 64 + 7 * 24,
         y: 64 + 7 * 24,
@@ -164,6 +171,8 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
       open: false,
       minimized: false,
       maximized: false,
+      canMinimize: true,
+      canMaximize: true,
       defaultPosition: {
         x: 64 + 8 * 24,
         y: 64 + 8 * 24,
@@ -183,6 +192,8 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
       open: false,
       minimized: false,
       maximized: false,
+      canMinimize: true,
+      canMaximize: true,
       defaultPosition: {
         x: 64 + 9 * 24,
         y: 64 + 9 * 24,
@@ -292,63 +303,73 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
 
   return (
     <AppTheme {...props}>
-      <CssBaseline enableColorScheme />
+      <ErrorBoundary>
+        <CssBaseline enableColorScheme />
 
-      <AppAppBar
-        tasks={tasks}
-        activeTask={activeTask}
-        onTaskClick={openTaskFromUi}
-      />
-      <Desktop tasks={tasks} onTaskOpen={openTaskFromUi} />
-      <Box sx={{ marginTop: `${win95TaskBarHeight}px` }}>
-        {tasks.map((task) => (
-          <WindowFrame
-            key={task.href}
-            task={task}
-            active={activeTask === task.href}
-            zIndex={getTaskZIndex(task.href)}
-            onFocusWindow={() => focusWindow(task)}
-            onClose={() => {
-              clearHashIfCurrent(task.href);
+        <AppAppBar
+          tasks={tasks}
+          activeTask={activeTask}
+          onTaskClick={openTaskFromUi}
+        />
+        <Desktop tasks={tasks} onTaskOpen={openTaskFromUi} />
+        <Box sx={{ marginTop: `${win95TaskBarHeight}px` }}>
+          {tasks.map((task) => (
+            <WindowFrame
+              key={task.href}
+              task={task}
+              active={activeTask === task.href}
+              zIndex={getTaskZIndex(task.href)}
+              onFocusWindow={() => focusWindow(task)}
+              onClose={() => {
+                clearHashIfCurrent(task.href);
 
-              patchTask(task.href, {
-                open: false,
-                minimized: false,
-                maximized: false,
-              });
+                patchTask(task.href, {
+                  open: false,
+                  minimized: false,
+                  maximized: false,
+                });
 
-              setTaskStack((current) =>
-                current.filter((taskHref) => taskHref !== task.href)
-              );
+                setTaskStack((current) =>
+                  current.filter((taskHref) => taskHref !== task.href)
+                );
 
-              setActiveTask((current) =>
-                current === task.href ? null : current
-              );
-            }}
-            onMinimize={() => {
-              patchTask(task.href, {
-                minimized: true,
-              });
+                setActiveTask((current) =>
+                  current === task.href ? null : current
+                );
+              }}
+              onMinimize={
+                task.canMinimize
+                  ? () => {
+                      patchTask(task.href, {
+                        minimized: true,
+                      });
 
-              setActiveTask((current) =>
-                current === task.href ? null : current
-              );
-            }}
-            onMaximize={() => {
-              patchTask(task.href, {
-                maximized: !task.maximized,
-                minimized: false,
-                open: true,
-              });
+                      setActiveTask((current) =>
+                        current === task.href ? null : current
+                      );
+                    }
+                  : undefined
+              }
+              onMaximize={
+                task.canMaximize
+                  ? () => {
+                      patchTask(task.href, {
+                        maximized: !task.maximized,
+                        minimized: false,
+                        open: true,
+                      });
 
-              bringToFront(task.href);
-            }}
-            isLastMobileInlineTask={task.href === lastMobileInlineTaskHref}
-          >
-            {task.component}
-          </WindowFrame>
-        ))}
-      </Box>
+                      bringToFront(task.href);
+                    }
+                  : undefined
+              }
+              isLastMobileInlineTask={task.href === lastMobileInlineTaskHref}
+            >
+              {task.component}
+            </WindowFrame>
+          ))}
+        </Box>
+      </ErrorBoundary>
     </AppTheme>
   );
 }

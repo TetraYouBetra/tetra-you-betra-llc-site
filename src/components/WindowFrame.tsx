@@ -209,6 +209,18 @@ export default function WindowFrame({
     }, 240);
   };
 
+  const handleTitleBarDoubleClick = (
+    event: React.MouseEvent<HTMLDivElement>
+  ) => {
+    if (isMobile || !onMaximize) return;
+
+    if ((event.target as HTMLElement).closest('button')) {
+      return;
+    }
+
+    handleMaximize();
+  };
+
   const mobileDialogSx: SxProps<Theme> =
     isMobile && mobileDialog
       ? {
@@ -311,6 +323,7 @@ export default function WindowFrame({
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
+          onDoubleClick={handleTitleBarDoubleClick}
           sx={{
             height: win95TitleBarHeight,
             minHeight: win95TitleBarHeight,
