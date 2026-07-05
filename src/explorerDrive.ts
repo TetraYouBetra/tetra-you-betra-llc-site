@@ -8,9 +8,9 @@ import txtIcon from './assets/Chicago95/icons/32/text-x-readme.png';
 import pictureIcon from './assets/Chicago95/icons/32/folder-pictures.png';
 import pictureOpenIcon from './assets/Chicago95/icons/32/folder-pictures-open.png';
 import gameIcon from './assets/Chicago95/icons/32/applications-accessories.png';
-import recycleBinIcon from './assets/Chicago95/icons/32/user-trash.png';
+// import recycleBinIcon from './assets/Chicago95/icons/32/user-trash.png';
+import recycleBinFullIcon from './assets/Chicago95/icons/32/user-trash-full.png';
 import planIcon from './assets/Chicago95/icons/32/plan.png';
-// import recycleBinFullIcon from './assets/Chicago95/icons/32/user-trash-full.png';
 
 export type ExplorerDocument = {
   type: 'document';
@@ -97,7 +97,14 @@ export const explorerDrive: ExplorerDirectory = {
           icon: txtIcon,
           body: `Welcome to the faux hard drive.
 
-This Explorer app is reusable. Other window apps can launch directly into any folder by passing an initialPath prop.`,
+I'm glad to see you're clicking around and exploring the site. :)`,
+        },
+        'NOTE TO SELF.txt': {
+          type: 'document',
+          title: 'NOTE TO SELF',
+          summary: 'A note to myself.',
+          icon: txtIcon,
+          body: `Note to self: Replace the AI generated images on the services and welcome components.`,
         },
       },
     },
@@ -125,8 +132,8 @@ This Explorer app is reusable. Other window apps can launch directly into any fo
       type: 'directory',
       title: 'Recycle Bin',
       defaultView: 'icon',
-      icon: recycleBinIcon,
-      activeIcon: recycleBinIcon,
+      icon: recycleBinFullIcon,
+      activeIcon: recycleBinFullIcon,
       summary: 'Tiny distractions may appear here later.',
       children: {
         'Old Site.tsx': {

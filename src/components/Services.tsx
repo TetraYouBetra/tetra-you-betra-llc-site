@@ -5,46 +5,47 @@ import Typography from '@mui/material/Typography';
 import { raised, sunken, win95 } from '../theme/win95Theme';
 import Win95Tabs from './Win95Tabs';
 
+import fullstackImage from '../assets/fullstack.png';
+import cloudImage from '../assets/cloud.png';
+import architectureImage from '../assets/architecture.png';
+import debuggingImage from '../assets/debugging.png';
+import edTechImage from '../assets/edtech.png';
+
 const items = [
   {
     title: 'Full-Stack',
     value: 'full-stack',
     description:
       'React, TypeScript, Node.js, APIs, dashboards, and internal tools.',
-    image:
-      'https://mui.com/static/images/templates/templates-images/dash-dark.png',
+    image: fullstackImage,
   },
   {
     title: 'Cloud',
     value: 'cloud',
     description:
       'AWS Lambda, API Gateway, RDS, deployment pipelines, and infrastructure cleanup.',
-    image:
-      'https://mui.com/static/images/templates/templates-images/mobile-dark.png',
+    image: cloudImage,
   },
   {
     title: 'Architecture',
     value: 'architecture',
     description:
       'System design, database modeling, integrations, scalability, and technical roadmaps.',
-    image:
-      'https://mui.com/static/images/templates/templates-images/devices-dark.png',
+    image: architectureImage,
   },
   {
     title: 'Debugging',
     value: 'debugging',
     description:
       'Performance issues, broken deployments, production bugs, and brittle systems.',
-    image:
-      'https://mui.com/static/images/templates/templates-images/devices-dark.png',
+    image: debuggingImage,
   },
   {
     title: 'EdTech',
     value: 'edtech',
     description:
       'LTI 1.3, Canvas, Blackboard, Moodle, grade passback, deep linking, and education platform integrations.',
-    image:
-      'https://mui.com/static/images/templates/templates-images/devices-dark.png',
+    image: edTechImage,
   },
 ];
 
@@ -85,38 +86,52 @@ export default function Services() {
             boxShadow: raised,
             minHeight: 360,
             p: 2,
+            display: 'flex',
+            flexDirection: { xs: 'column', sm: 'row' },
+            gap: 2,
+            alignItems: 'stretch',
           }}
         >
           <Box
             sx={{
-              mx: 'auto',
-              mb: 2,
-              width: { xs: '100%', sm: 360 },
-              maxWidth: '100%',
-              height: { xs: 180, sm: 240 },
+              width: { xs: '100%', sm: 260 },
+              height: { xs: 180, sm: 'auto' },
+              minHeight: { sm: 320 },
               backgroundColor: win95.light,
               boxShadow: sunken,
               p: '4px',
+              flexShrink: 0,
             }}
           >
             <Box
-              component="img"
-              src={selected.image}
-              alt=""
               sx={{
                 width: '100%',
                 height: '100%',
-                objectFit: 'cover',
+                backgroundImage: `url(${selected.image})`,
+                backgroundSize: 'cover',
+                backgroundPositionX: 'center',
+                backgroundPositionY: 'top',
                 display: 'block',
+                backgroundColor: win95.black,
               }}
             />
           </Box>
 
-          <Typography variant="h5" gutterBottom>
-            {selected.title}
-          </Typography>
+          <Box
+            sx={{
+              flex: 1,
+              minWidth: 0,
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+            }}
+          >
+            <Typography variant="h5" gutterBottom>
+              {selected.title}
+            </Typography>
 
-          <Typography variant="body1">{selected.description}</Typography>
+            <Typography variant="body1">{selected.description}</Typography>
+          </Box>
         </Box>
       </Box>
     </Container>

@@ -456,8 +456,8 @@ function DirectoryPreview({
           entries.map(([name, node]) => (
             <Box
               key={name}
-              onClick={() => onActiveChange(name)}
-              onDoubleClick={() => onOpenPath([...path, name])}
+              // onClick={() => onActiveChange(name)}
+              onClick={() => onOpenPath([...path, name])}
               sx={{
                 display: 'grid',
                 gridTemplateColumns: '24px minmax(0, 1fr)',
