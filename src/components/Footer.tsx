@@ -8,17 +8,11 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
 function Copyright() {
   return (
-    <Typography variant="body2" sx={{ color: 'text.secondary', mt: 1 }}>
+    <Typography variant="body1" sx={{ mt: 1 }}>
       {'© '}
       {new Date().getFullYear()}{' '}
-      <Link
-        href="https://tetrayoubetra.com/"
-        sx={{
-          color: 'text.secondary',
-        }}
-      >
-        Tetra You Betra LLC. All rights reserved.
-      </Link>
+      <Link href="https://tetrayoubetra.com/">Tetra You Betra LLC</Link>. All
+      rights reserved.
     </Typography>
   );
 }
@@ -33,40 +27,22 @@ export default function Footer() {
           flexDirection: 'row',
           justifyContent: 'space-between',
           gap: { xs: 4, sm: 8 },
-          textAlign: { sm: 'center', md: 'left' },
+          textAlign: 'left',
         }}
       >
         <div>
-          <Link
-            variant="body2"
-            href="#privacy-policy"
-            sx={{
-              color: 'text.secondary',
-            }}
-          >
+          <Link variant="body1" href="#privacy-policy">
             Privacy Policy
           </Link>
           <Typography sx={{ display: 'inline', mx: 0.5, opacity: 0.5 }}>
             &nbsp;•&nbsp;
           </Typography>
-          <Link
-            variant="body2"
-            href="#terms-of-service"
-            sx={{
-              color: 'text.secondary',
-            }}
-          >
+          <Link variant="body1" href="#terms-of-service">
             Terms of Service
           </Link>
           <Copyright />
 
-          <Link
-            variant="body2"
-            href="https://github.com/grassmunk/Chicago95"
-            sx={{
-              color: 'text.secondary',
-            }}
-          >
+          <Link variant="body1" href="https://github.com/grassmunk/Chicago95">
             Pixel icons based on the Chicago95 project.
           </Link>
         </div>
@@ -74,7 +50,7 @@ export default function Footer() {
           direction="row"
           spacing={1}
           useFlexGap
-          sx={{ justifyContent: 'left', color: 'text.secondary' }}
+          sx={{ justifyContent: 'left', color: 'text.primary' }}
         >
           <IconButton
             color="inherit"

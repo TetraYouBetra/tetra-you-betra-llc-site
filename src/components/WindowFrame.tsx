@@ -102,24 +102,35 @@ export default function WindowFrame({
   }, [shouldBeVisible, pendingExitAction]);
 
   const titleBarRef = React.useRef<HTMLDivElement | null>(null);
+
   React.useEffect(() => {
-    if (!isMobile || mobileDialog || !titleBarRef.current) return;
+    if (!isMobile || mobileDialog) return;
+
+    const observedElement = isLastMobileInlineTask
+      ? frameRef.current
+      : titleBarRef.current;
+
+    if (!observedElement) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          onFocusWindow();
+        if (!entry.isIntersecting) return;
+
+        if (isLastMobileInlineTask && entry.intersectionRatio < 1) {
+          return;
         }
+
+        onFocusWindow();
       },
       {
-        threshold: 0,
+        threshold: isLastMobileInlineTask ? 1 : 0,
         rootMargin: isLastMobileInlineTask
           ? `-${TOP_BAR_HEIGHT}px 0px 0px 0px`
           : `-${TOP_BAR_HEIGHT}px 0px -55% 0px`,
       }
     );
 
-    observer.observe(titleBarRef.current);
+    observer.observe(observedElement);
 
     return () => observer.disconnect();
   }, [isMobile, mobileDialog, isLastMobileInlineTask, onFocusWindow]);
@@ -365,7 +376,11 @@ export default function WindowFrame({
             )}
 
             {onClose && (
-              <WindowButton label="×" onClick={() => startExit('close')} />
+              <WindowButton
+                label="×"
+                disabled={isMobile && !task.mobileDialog}
+                onClick={() => startExit('close')}
+              />
             )}
           </Box>
         </Box>
@@ -389,15 +404,18 @@ export default function WindowFrame({
 function WindowButton({
   label,
   onClick,
+  disabled = false,
 }: {
   label: string;
   onClick: () => void;
+  disabled?: boolean;
 }) {
   return (
     <IconButton
       size="small"
       onPointerDown={(event) => event.stopPropagation()}
       onClick={onClick}
+      disabled={disabled}
       sx={{
         width: 14,
         height: 14,
