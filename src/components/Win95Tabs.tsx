@@ -23,12 +23,14 @@ function getMobileTabOrder(
 ): Win95TabItem[] {
   const active = tabs.find((tab) => tab.value === value);
   if (!active) return tabs;
-
   const inactive = tabs.filter((tab) => tab.value !== value);
+  const insertIndex = Math.max(0, inactive.length - 1);
 
-  // Selected tab is always rendered last so it appears
-  // on the bottom/front row like classic Win95 property sheets.
-  return [...inactive, active];
+  return [
+    ...inactive.slice(0, insertIndex),
+    active,
+    ...inactive.slice(insertIndex),
+  ];
 }
 
 function getMobileColumnCount(tabCount: number): number {
