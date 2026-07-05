@@ -226,7 +226,7 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
       href: '#recycle-bin',
       icon: recycleBinIcon,
       initialFocused: false,
-      component: <Explorer />,
+      component: <Explorer initialPath="/Recycle Bin" />,
       open: false,
       minimized: false,
       maximized: false,

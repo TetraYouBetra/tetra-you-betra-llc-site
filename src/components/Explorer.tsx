@@ -1,8 +1,10 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import ScrollViewport from './ScrollViewport';
 import ExplorerTree from './ExplorerTree';
 import {
@@ -10,8 +12,13 @@ import {
   type ExplorerDirectory,
   type ExplorerDocument,
   type ExplorerNode,
+  type ExplorerViewMode,
 } from '../explorerDrive';
 import { sunken, win95 } from '../theme/win95Theme';
+import IconViewport, {
+  type IconPosition,
+  type IconViewportItem,
+} from './IconViewport';
 
 type ExplorerProps = {
   initialPath?: string;
@@ -87,24 +94,67 @@ export default function Explorer({ initialPath = '/' }: ExplorerProps) {
   const [expanded, setExpanded] = React.useState<Record<string, boolean>>(() =>
     getExpandedForPath(initialParts)
   );
+  const [viewOverrides, setViewOverrides] = React.useState<
+    Record<string, ExplorerViewMode>
+  >({});
+  const [rightPaneActiveId, setRightPaneActiveId] = React.useState<
+    string | null
+  >(null);
+  const [iconPositionsByPath, setIconPositionsByPath] = React.useState<
+    Record<string, Record<string, IconPosition>>
+  >({});
 
   const selectedNode = getNodeAtPath(selectedPath);
+  const selectedPathKey = pathId(selectedPath);
 
-  const pushPath = (nextParts: string[]) => {
-    setSelectedPath(nextParts);
-    setAddressValue(pathToString(nextParts));
-    setExpanded((current) => ({
-      ...current,
-      ...getExpandedForPath(nextParts),
-    }));
+  const currentView: ExplorerViewMode = isDirectory(selectedNode)
+    ? (viewOverrides[selectedPathKey] ?? selectedNode.defaultView ?? 'list')
+    : 'list';
 
-    setHistory((current) => {
-      const sliced = current.slice(0, historyIndex + 1);
-      return [...sliced, nextParts];
-    });
+  const currentIconPositions = iconPositionsByPath[selectedPathKey] ?? {};
 
-    setHistoryIndex((current) => current + 1);
-  };
+  const setCurrentIconPositions: React.Dispatch<
+    React.SetStateAction<Record<string, IconPosition>>
+  > = React.useCallback(
+    (nextPositions) => {
+      setIconPositionsByPath((current) => {
+        const currentForPath = current[selectedPathKey] ?? {};
+        const resolvedPositions =
+          typeof nextPositions === 'function'
+            ? nextPositions(currentForPath)
+            : nextPositions;
+
+        return {
+          ...current,
+          [selectedPathKey]: resolvedPositions,
+        };
+      });
+    },
+    [selectedPathKey]
+  );
+
+  const navigateToPath = React.useCallback(
+    (nextParts: string[], replaceHistory = false) => {
+      setSelectedPath(nextParts);
+      setAddressValue(pathToString(nextParts));
+      setRightPaneActiveId(null);
+
+      setExpanded((current) => ({
+        ...current,
+        ...getExpandedForPath(nextParts),
+      }));
+
+      if (replaceHistory) return;
+
+      setHistory((current) => {
+        const sliced = current.slice(0, historyIndex + 1);
+        return [...sliced, nextParts];
+      });
+
+      setHistoryIndex((current) => current + 1);
+    },
+    [historyIndex]
+  );
 
   const goBack = () => {
     if (historyIndex <= 0) return;
@@ -113,12 +163,7 @@ export default function Explorer({ initialPath = '/' }: ExplorerProps) {
     const nextPath = history[nextIndex];
 
     setHistoryIndex(nextIndex);
-    setSelectedPath(nextPath);
-    setAddressValue(pathToString(nextPath));
-    setExpanded((current) => ({
-      ...current,
-      ...getExpandedForPath(nextPath),
-    }));
+    navigateToPath(nextPath, true);
   };
 
   const goForward = () => {
@@ -128,17 +173,12 @@ export default function Explorer({ initialPath = '/' }: ExplorerProps) {
     const nextPath = history[nextIndex];
 
     setHistoryIndex(nextIndex);
-    setSelectedPath(nextPath);
-    setAddressValue(pathToString(nextPath));
-    setExpanded((current) => ({
-      ...current,
-      ...getExpandedForPath(nextPath),
-    }));
+    navigateToPath(nextPath, true);
   };
 
   const goUp = () => {
     if (selectedPath.length === 0) return;
-    pushPath(selectedPath.slice(0, -1));
+    navigateToPath(selectedPath.slice(0, -1));
   };
 
   const submitAddress = (event: React.FormEvent) => {
@@ -149,11 +189,11 @@ export default function Explorer({ initialPath = '/' }: ExplorerProps) {
 
     if (!nextNode) return;
 
-    pushPath(nextParts);
+    navigateToPath(nextParts);
   };
 
   const handleSelectPath = (path: string[]) => {
-    pushPath(path);
+    navigateToPath(path);
   };
 
   return (
@@ -208,6 +248,28 @@ export default function Explorer({ initialPath = '/' }: ExplorerProps) {
             size="small"
           />
         </Box>
+
+        <Typography sx={{ fontSize: 12, ml: 1 }}>View</Typography>
+
+        <Select
+          size="small"
+          value={currentView}
+          disabled={!isDirectory(selectedNode)}
+          onChange={(event) => {
+            setViewOverrides((current) => ({
+              ...current,
+              [selectedPathKey]: event.target.value as ExplorerViewMode,
+            }));
+          }}
+          sx={{
+            width: 82,
+            height: 26,
+            fontSize: 12,
+          }}
+        >
+          <MenuItem value="list">List</MenuItem>
+          <MenuItem value="icon">Icon</MenuItem>
+        </Select>
       </Box>
 
       <Box
@@ -243,13 +305,29 @@ export default function Explorer({ initialPath = '/' }: ExplorerProps) {
 
         <Box sx={{ flex: 1, height: { xs: 320, sm: 420 }, minWidth: 0 }}>
           <ScrollViewport>
-            <Box sx={{ p: 2 }}>
+            <Box
+              sx={{
+                p: 2,
+                height: '100%',
+                minHeight: 0,
+                boxSizing: 'border-box',
+              }}
+            >
               {!selectedNode ? (
                 <EmptyExplorerMessage message="Path not found." />
               ) : isDocument(selectedNode) ? (
                 <DocumentPreview document={selectedNode} />
               ) : (
-                <DirectoryPreview directory={selectedNode} />
+                <DirectoryPreview
+                  directory={selectedNode}
+                  path={selectedPath}
+                  view={currentView}
+                  onOpenPath={navigateToPath}
+                  activeId={rightPaneActiveId}
+                  onActiveChange={setRightPaneActiveId}
+                  iconPositions={currentIconPositions}
+                  onIconPositionsChange={setCurrentIconPositions}
+                />
               )}
             </Box>
           </ScrollViewport>
@@ -275,12 +353,60 @@ export default function Explorer({ initialPath = '/' }: ExplorerProps) {
   );
 }
 
-function DirectoryPreview({ directory }: { directory: ExplorerDirectory }) {
-  const entries = Object.entries(directory.children);
+function DirectoryPreview({
+  directory,
+  path,
+  view,
+  onOpenPath,
+  activeId,
+  onActiveChange,
+  iconPositions,
+  onIconPositionsChange,
+}: {
+  directory: ExplorerDirectory;
+  path: string[];
+  view: ExplorerViewMode;
+  onOpenPath: (path: string[]) => void;
+  activeId: string | null;
+  onActiveChange: (id: string | null) => void;
+  iconPositions: Record<string, IconPosition>;
+  onIconPositionsChange: React.Dispatch<
+    React.SetStateAction<Record<string, IconPosition>>
+  >;
+}) {
+  const entries = React.useMemo(
+    () => Object.entries(directory.children),
+    [directory.children]
+  );
+
+  const iconItems = React.useMemo<IconViewportItem[]>(
+    () =>
+      entries.map(([name, node]) => ({
+        id: name,
+        label: node.title,
+        icon: node.icon,
+      })),
+    [entries]
+  );
 
   return (
-    <Box>
-      <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mb: 2 }}>
+    <Box
+      sx={{
+        height: '100%',
+        minHeight: 0,
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          gap: 2,
+          alignItems: 'center',
+          mb: 2,
+          flexShrink: 0,
+        }}
+      >
         <Box
           component="img"
           src={directory.activeIcon}
@@ -298,36 +424,83 @@ function DirectoryPreview({ directory }: { directory: ExplorerDirectory }) {
         </Box>
       </Box>
 
-      <Box sx={{ boxShadow: sunken, backgroundColor: win95.white, p: 1 }}>
+      <Box
+        sx={{
+          backgroundColor: win95.white,
+          p: view === 'list' ? 1 : 0,
+          flex: 1,
+          minHeight: 180,
+          minWidth: 0,
+          overflow: 'hidden',
+        }}
+      >
         {entries.length === 0 ? (
-          <Typography sx={{ color: win95.disabledText }}>
+          <Typography sx={{ color: win95.disabledText, p: 1 }}>
             This folder is empty.
           </Typography>
+        ) : view === 'icon' ? (
+          <IconViewport
+            items={iconItems}
+            activeId={activeId}
+            onActiveChange={onActiveChange}
+            onOpen={(id) => onOpenPath([...path, id])}
+            positions={iconPositions}
+            onPositionsChange={onIconPositionsChange}
+            labelColor="dark"
+            sx={{
+              minHeight: { xs: 220, sm: '100%' },
+              overflow: 'auto',
+            }}
+          />
         ) : (
           entries.map(([name, node]) => (
             <Box
               key={name}
+              onClick={() => onActiveChange(name)}
+              onDoubleClick={() => onOpenPath([...path, name])}
               sx={{
                 display: 'grid',
                 gridTemplateColumns: '24px minmax(0, 1fr)',
                 gap: 1,
                 alignItems: 'center',
                 py: '3px',
+                px: '4px',
+                cursor: 'pointer',
+                backgroundColor:
+                  activeId === name ? win95.title : 'transparent',
+                color: activeId === name ? win95.titleText : win95.text,
+
+                '&:hover': {
+                  backgroundColor:
+                    activeId === name ? win95.title : win95.light,
+                },
               }}
             >
               <Box
                 component="img"
-                src={node.type === 'directory' ? node.icon : node.icon}
+                src={node.icon}
                 alt=""
                 sx={{ width: 20, height: 20, imageRendering: 'pixelated' }}
               />
+
               <Box sx={{ minWidth: 0 }}>
-                <Typography sx={{ fontSize: 12 }}>{node.title}</Typography>
+                <Typography
+                  sx={{
+                    fontSize: 12,
+                    color: activeId === name ? win95.titleText : win95.text,
+                  }}
+                >
+                  {node.title}
+                </Typography>
+
                 {'summary' in node && node.summary && (
                   <Typography
                     sx={{
                       fontSize: 11,
-                      color: win95.disabledText,
+                      color:
+                        activeId === name
+                          ? win95.titleText
+                          : win95.disabledText,
                       whiteSpace: 'nowrap',
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
