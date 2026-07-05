@@ -39,6 +39,14 @@ export const sunken = `
   inset -2px -2px 0 ${win95.light}
 `;
 
+export const disabledControl = {
+  color: win95.shadow,
+  backgroundColor: win95.face,
+  boxShadow: raised,
+  opacity: 1,
+  textShadow: `1px 1px 0 ${win95.light}`,
+};
+
 export const pressed = sunken;
 
 export const titleBarActive = {
@@ -107,6 +115,7 @@ export const win95ThemeOptions = {
         text: {
           primary: win95.text,
           secondary: win95.text,
+          link: win95.link,
         },
         divider: win95.mid,
       },
@@ -124,6 +133,7 @@ export const win95ThemeOptions = {
         text: {
           primary: win95.text,
           secondary: win95.text,
+          link: win95.link,
         },
         divider: win95.mid,
       },
@@ -339,13 +349,7 @@ export const win95ThemeOptions = {
             boxShadow: sunken,
             transform: 'translate(1px, 1px)',
           },
-          '&.Mui-disabled': {
-            color: win95.shadow,
-            backgroundColor: win95.face,
-            boxShadow: raised,
-            opacity: 1,
-            textShadow: `1px 1px 0 ${win95.light}`,
-          },
+          '&.Mui-disabled': disabledControl,
         },
         contained: {
           backgroundColor: win95.face,
@@ -370,12 +374,23 @@ export const win95ThemeOptions = {
           backgroundColor: win95.face,
           border: 'none',
           boxShadow: raised,
+
           '&:hover': {
             backgroundColor: win95.face,
           },
+
           '&:active': {
             boxShadow: sunken,
             transform: 'translate(1px, 1px)',
+          },
+
+          '&.Mui-disabled': {
+            ...disabledControl,
+
+            '& .MuiSvgIcon-root': {
+              color: win95.shadow,
+              filter: 'drop-shadow(1px 1px 0 white)',
+            },
           },
         },
       },
@@ -497,10 +512,7 @@ export const win95ThemeOptions = {
           color: win95.text,
           backgroundColor: win95.face,
           boxShadow: raised,
-          '&.Mui-disabled': {
-            color: win95.disabledText,
-            opacity: 1,
-          },
+          '&.Mui-disabled': disabledControl,
           '&:active': {
             boxShadow: pressed,
           },
@@ -556,10 +568,7 @@ export const win95ThemeOptions = {
             },
           },
 
-          '&.Mui-disabled': {
-            color: win95.disabledText,
-            opacity: 1,
-          },
+          '&.Mui-disabled': disabledControl,
 
           '&.Mui-focusVisible': {
             outline: `1px dotted ${win95.black}`,
@@ -575,6 +584,31 @@ export const win95ThemeOptions = {
       },
     },
 
+    MuiLink: {
+      styleOverrides: {
+        root: {
+          color: win95.link,
+          textDecoration: 'underline',
+
+          '&:visited': {
+            color: win95.magenta,
+          },
+
+          '&:hover': {
+            color: win95.error,
+          },
+
+          '&:active': {
+            color: win95.error,
+          },
+
+          '&:focus-visible': {
+            outline: `1px dotted ${win95.black}`,
+            outlineOffset: '1px',
+          },
+        },
+      },
+    },
     MuiInputLabel: {
       styleOverrides: {
         root: {
@@ -594,10 +628,7 @@ export const win95ThemeOptions = {
             color: win95.error,
           },
 
-          '&.Mui-disabled': {
-            color: win95.disabledText,
-            textShadow: `1px 1px 0 ${win95.light}`,
-          },
+          '&.Mui-disabled': disabledControl,
         },
 
         shrink: {

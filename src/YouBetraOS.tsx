@@ -312,7 +312,24 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
           onTaskClick={openTaskFromUi}
         />
         <Desktop tasks={tasks} onTaskOpen={openTaskFromUi} />
-        <Box sx={{ marginTop: `${win95TaskBarHeight}px` }}>
+        <Box
+          sx={{
+            mt: `${win95TaskBarHeight}px`,
+            display: {
+              xs: 'flex',
+              sm: 'block',
+            },
+            flexDirection: 'column',
+            gap: {
+              xs: 2,
+              sm: 0,
+            },
+            pb: {
+              xs: 2,
+              sm: 0,
+            },
+          }}
+        >
           {tasks.map((task) => (
             <WindowFrame
               key={task.href}
