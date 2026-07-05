@@ -9,6 +9,7 @@ import flamingGif from '../assets/Gifs/flamingline.gif';
 import questionMarkGif from '../assets/Gifs/question-mark.gif';
 import maxwellGif from '../assets/Gifs/maxwell.gif';
 import beesGif from '../assets/Gifs/bees.gif';
+import taraHeadshot from '../assets/Headshots/tara.png';
 
 const highlights = [
   {
@@ -142,6 +143,17 @@ export default function About() {
         </Stack>
 
         {flamingDivider}
+        <Stack
+          direction="row"
+          sx={{ width: '100%', justifyContent: 'center', mt: 1, mb: 1 }}
+        >
+          <Box
+            component="img"
+            src={taraHeadshot}
+            alt="tara headshot"
+            sx={{ borderRadius: '50% !important' }}
+          />
+        </Stack>
 
         <Typography variant="body1" sx={bodySx} component="p" gutterBottom>
           I’m <b>Tara</b>, a senior software developer and engineering

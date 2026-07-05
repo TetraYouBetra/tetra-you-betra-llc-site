@@ -498,24 +498,20 @@ export const win95ThemeOptions = {
       },
       styleOverrides: {
         root: {
-          minHeight: 26,
+          minHeight: 27,
           backgroundColor: win95.face,
-          borderBottom: `1px solid ${win95.darkShadow}`,
+          overflow: 'visible',
+          paddingLeft: '3px',
+          paddingRight: '5px',
+        },
+        scroller: {
+          overflow: 'visible !important',
         },
         indicator: {
           display: 'none',
         },
-
         scrollButtons: {
-          width: 22,
-          minHeight: 22,
-          color: win95.text,
-          backgroundColor: win95.face,
-          boxShadow: raised,
-          '&.Mui-disabled': disabledControl,
-          '&:active': {
-            boxShadow: pressed,
-          },
+          display: 'none',
         },
       },
     },
@@ -528,10 +524,16 @@ export const win95ThemeOptions = {
           minWidth: 72,
           padding: '2px 10px',
           marginRight: -1,
+          marginTop: 3,
+          marginBottom: 0,
           color: win95.text,
           backgroundColor: win95.face,
           border: 'none',
-          boxShadow: raised,
+          boxShadow: `
+        inset 1px 1px 0 ${win95.highlight},
+        inset 2px 2px 0 ${win95.light},
+        inset -1px 0 0 ${win95.darkShadow}
+      `,
           fontFamily: win95FontFamily,
           fontSize: 12,
           fontWeight: 400,
@@ -544,9 +546,11 @@ export const win95ThemeOptions = {
 
           '&.Mui-selected': {
             position: 'relative',
-            zIndex: 1,
-            height: 27,
+            zIndex: 2,
+            height: 29,
             minHeight: 27,
+            marginTop: 0,
+            marginBottom: -2,
             paddingTop: '3px',
             paddingBottom: '3px',
             backgroundColor: win95.face,
@@ -556,16 +560,6 @@ export const win95ThemeOptions = {
           inset 2px 2px 0 ${win95.light},
           inset -1px 0 0 ${win95.darkShadow}
         `,
-
-            '&::after': {
-              content: '""',
-              position: 'absolute',
-              left: 2,
-              right: 2,
-              bottom: -1,
-              height: 2,
-              backgroundColor: win95.face,
-            },
           },
 
           '&.Mui-disabled': disabledControl,
