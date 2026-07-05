@@ -50,6 +50,7 @@ export default function WindowFrame({
     defaultPosition = { x: 24, y: TOP_BAR_HEIGHT + 24 },
     defaultSize = { width: 420 },
     mobileDialog = false,
+    desktopOnly = false,
   } = task;
 
   const theme = useTheme();
@@ -57,7 +58,7 @@ export default function WindowFrame({
   const frameRef = React.useRef<HTMLDivElement | null>(null);
 
   const shouldBeVisible = isMobile
-    ? !mobileDialog || task.open
+    ? (!mobileDialog && !desktopOnly) || task.open
     : task.open && !task.minimized;
 
   const [renderVisible, setRenderVisible] = React.useState(shouldBeVisible);
