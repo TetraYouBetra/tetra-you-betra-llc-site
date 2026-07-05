@@ -1,14 +1,14 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import { raised, sunken, win95 } from '../theme/win95Theme';
+import Win95Tabs from './Win95Tabs';
 
 const items = [
   {
     title: 'Full-Stack',
+    value: 'full-stack',
     description:
       'React, TypeScript, Node.js, APIs, dashboards, and internal tools.',
     image:
@@ -16,6 +16,7 @@ const items = [
   },
   {
     title: 'Cloud',
+    value: 'cloud',
     description:
       'AWS Lambda, API Gateway, RDS, deployment pipelines, and infrastructure cleanup.',
     image:
@@ -23,6 +24,7 @@ const items = [
   },
   {
     title: 'Architecture',
+    value: 'architecture',
     description:
       'System design, database modeling, integrations, scalability, and technical roadmaps.',
     image:
@@ -30,6 +32,7 @@ const items = [
   },
   {
     title: 'Debugging',
+    value: 'debugging',
     description:
       'Performance issues, broken deployments, production bugs, and brittle systems.',
     image:
@@ -37,6 +40,7 @@ const items = [
   },
   {
     title: 'EdTech',
+    value: 'edtech',
     description:
       'LTI 1.3, Canvas, Blackboard, Moodle, grade passback, deep linking, and education platform integrations.',
     image:
@@ -45,8 +49,9 @@ const items = [
 ];
 
 export default function Services() {
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
-  const selected = items[selectedIndex];
+  const [selectedValue, setSelectedValue] = React.useState(items[0].value);
+  const selected =
+    items.find((item) => item.value === selectedValue) ?? items[0];
 
   return (
     <Container id="services">
@@ -61,31 +66,21 @@ export default function Services() {
         confidence.
       </Typography>
 
-      <Box
-        sx={{
-          backgroundColor: win95.face,
-        }}
-      >
-        <Tabs
-          value={selectedIndex}
-          onChange={(_, value) => setSelectedIndex(value)}
-          variant="scrollable"
-          scrollButtons="auto"
-          aria-label="Services tabs"
-          sx={{
-            mb: '-1px',
-            position: 'relative',
-            zIndex: 1,
-          }}
-        >
-          {items.map((item) => (
-            <Tab key={item.title} label={item.title} />
-          ))}
-        </Tabs>
+      <Box sx={{ backgroundColor: win95.face }}>
+        <Win95Tabs
+          value={selectedValue}
+          onChange={setSelectedValue}
+          tabs={items.map((item) => ({
+            value: item.value,
+            label: item.title,
+          }))}
+        />
 
         <Box
           role="tabpanel"
           sx={{
+            position: 'relative',
+            zIndex: 0,
             backgroundColor: win95.face,
             boxShadow: raised,
             minHeight: 360,
