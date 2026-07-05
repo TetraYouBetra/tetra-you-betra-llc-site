@@ -153,30 +153,32 @@ export default function AppAppBar({
             </Box>
 
             <Box sx={{ flex: 1 }}>
-              {tasks.map((task) => (
-                <MenuItem
-                  key={task.href}
-                  component="a"
-                  href={task.href}
-                  onClick={() => {
-                    handleClose();
-                    onTaskClick(task.href);
-                  }}
-                  sx={{
-                    minHeight: 32,
-                    gap: '6px',
-                    fontSize: 13,
-                    color: win95.text,
-                    '&:hover, &.Mui-focusVisible': {
-                      backgroundColor: win95.title,
-                      color: win95.titleText,
-                    },
-                  }}
-                >
-                  {task.icon && <TaskIcon src={task.icon} alt="" />}
-                  {task.label}
-                </MenuItem>
-              ))}
+              {tasks.map((task) =>
+                !task.desktopOnly && !task.mobileDialog ? (
+                  <MenuItem
+                    key={task.href}
+                    component="a"
+                    href={task.href}
+                    onClick={() => {
+                      handleClose();
+                      onTaskClick(task.href);
+                    }}
+                    sx={{
+                      minHeight: 32,
+                      gap: '6px',
+                      fontSize: 13,
+                      color: win95.text,
+                      '&:hover, &.Mui-focusVisible': {
+                        backgroundColor: win95.title,
+                        color: win95.titleText,
+                      },
+                    }}
+                  >
+                    {task.icon && <TaskIcon src={task.icon} alt="" />}
+                    {task.label}
+                  </MenuItem>
+                ) : undefined
+              )}
             </Box>
           </Box>
         </Menu>

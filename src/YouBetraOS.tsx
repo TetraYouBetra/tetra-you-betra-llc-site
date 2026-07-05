@@ -18,12 +18,16 @@ import iconAboutMe from './assets/Chicago95/icons/32/emblem-web.png';
 import iconFooter from './assets/Chicago95/icons/32/system-help.png';
 import iconServices from './assets/Chicago95/icons/32/emblem-system.png';
 import iconTestimonials from './assets/Chicago95/icons/32/stock_people.png';
+import iconMyComputer from './assets/Chicago95/icons/32/computer.png';
 import iconEngagementOptions from './assets/Chicago95/icons/32/folder-documents.png';
 import iconContact from './assets/Chicago95/icons/32/mail-outbox-old.png';
+import recycleBinIcon from './assets/Chicago95/icons/32/user-trash.png';
+
 import Box from '@mui/material/Box';
 import { win95TaskBarHeight } from './theme/win95Theme';
 import Desktop from './components/Desktop';
 import ErrorBoundary from './ErrorBoundary';
+import Explorer from './components/Explorer';
 
 export interface Task {
   label: string;
@@ -39,13 +43,32 @@ export interface Task {
   defaultSize?: { width: number | string; height?: number | string };
   initialFocused?: boolean;
   mobileDialog?: boolean;
+  desktopOnly?: boolean;
 }
 
 export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
   const [activeTask, setActiveTask] = useState<string | null>('#welcome');
   const [tasks, setTasks] = useState<Task[]>([
     {
-      label: 'Welcome.exe',
+      label: 'My Computer',
+      href: '#computer',
+      icon: iconMyComputer,
+      initialFocused: false,
+      component: <Explorer />,
+      open: false,
+      minimized: false,
+      maximized: false,
+      canMinimize: true,
+      canMaximize: true,
+      defaultPosition: {
+        x: 64 + 1 * 24,
+        y: 64 + 1 * 24,
+      },
+      defaultSize: { width: 700, height: 'auto' },
+      desktopOnly: true,
+    },
+    {
+      label: 'Welcome',
       href: '#welcome',
       icon: iconHero,
       initialFocused: true,
@@ -61,7 +84,7 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
       defaultSize: { width: 700, height: 'auto' },
     },
     {
-      label: 'About Me.html',
+      label: 'About Me',
       href: '#about',
       icon: iconAboutMe,
       component: (
@@ -81,7 +104,7 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
       defaultSize: { width: 700, height: 500 },
     },
     {
-      label: 'Services.exe',
+      label: 'Services',
       href: '#services',
       icon: iconServices,
       component: <Services />,
@@ -96,7 +119,7 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
       defaultSize: { width: 700, height: 'auto' },
     },
     {
-      label: 'Testimonials.exe',
+      label: 'Testimonials',
       href: '#testimonials',
       icon: iconTestimonials,
       component: <Testimonials />,
@@ -111,26 +134,23 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
       defaultSize: { width: 700, height: 'auto' },
     },
     {
-      label: 'Engagement Options.exe',
+      label: 'Engagement Options',
       href: '#engagement-options',
       icon: iconEngagementOptions,
-      component: (
-        <ScrollViewport>
-          <EngagementOptions />
-        </ScrollViewport>
-      ),
+      component: <EngagementOptions />,
       open: false,
       minimized: false,
       maximized: false,
       canMinimize: true,
+      canMaximize: true,
       defaultPosition: {
         x: 64 + 5 * 24,
         y: 64 + 5 * 24,
       },
-      defaultSize: { width: 700, height: 500 },
+      defaultSize: { width: 700, height: 'auto' },
     },
     {
-      label: 'Contact.exe',
+      label: 'Contact',
       href: '#contact',
       icon: iconContact,
       component: <Contact />,
@@ -145,7 +165,7 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
       defaultSize: { width: 700, height: 'auto' },
     },
     {
-      label: 'Footer.exe',
+      label: 'Footer',
       href: '#footer',
       icon: iconFooter,
       component: <Footer />,
@@ -160,7 +180,7 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
       defaultSize: { width: 700, height: 'auto' },
     },
     {
-      label: 'Privacy Policy.rtf',
+      label: 'Privacy Policy',
       href: '#privacy-policy',
       icon: iconContact,
       component: (
@@ -181,7 +201,7 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
       mobileDialog: true,
     },
     {
-      label: 'Terms of Service.rtf',
+      label: 'Terms of Service',
       href: '#terms-of-service',
       icon: iconContact,
       component: (
@@ -200,6 +220,24 @@ export default function YouBetraOS(props: { disableCustomTheme?: boolean }) {
       },
       defaultSize: { width: 700, height: 500 },
       mobileDialog: true,
+    },
+    {
+      label: 'Recycle Bin',
+      href: '#recycle-bin',
+      icon: recycleBinIcon,
+      initialFocused: false,
+      component: <Explorer />,
+      open: false,
+      minimized: false,
+      maximized: false,
+      canMinimize: true,
+      canMaximize: true,
+      defaultPosition: {
+        x: 64 + 2 * 24,
+        y: 64 + 2 * 24,
+      },
+      defaultSize: { width: 700, height: 'auto' },
+      desktopOnly: true,
     },
   ]);
   const taskHrefsRef = useRef<Set<string>>(new Set());
