@@ -4,6 +4,7 @@ import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import { win95, sunken } from '../theme/win95Theme';
+import computerImage from '../assets/computer.png';
 
 export default function Hero() {
   return (
@@ -22,6 +23,10 @@ export default function Hero() {
             sx={{
               height: { xs: 180, sm: 340 },
               backgroundColor: win95.desktop,
+              backgroundImage: `url(${computerImage})`,
+              backgroundPositionX: 'center',
+              backgroundPositionY: 'top',
+              backgroundSize: 'cover',
               boxShadow: sunken,
               border: `1px solid ${win95.highlight}`,
             }}

@@ -259,17 +259,6 @@ export default function AppAppBar({
             >
               12:00 PM
             </Typography>
-
-            <Typography
-              aria-hidden
-              sx={{
-                fontSize: 12,
-                lineHeight: 1,
-                display: { xs: 'block', sm: 'none' },
-              }}
-            >
-              🕒
-            </Typography>
           </Box>
         )}
       </Box>
