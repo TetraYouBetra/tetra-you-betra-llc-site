@@ -20,7 +20,7 @@ import oneOriginLogo from '../assets/Logos/oneorigin.png';
 import dataslushLogo from '../assets/Logos/dataslush.png';
 
 import TestimonialTree, { TreeNode } from './TestimonialTree';
-import { useMediaQuery, useTheme } from '@mui/material';
+import { Link, useMediaQuery, useTheme } from '@mui/material';
 
 type Testimonial = {
   id: string;
@@ -30,6 +30,7 @@ type Testimonial = {
   avatar?: string;
   companyLogo?: string;
   testimonial: string;
+  linkedIn?: string;
 };
 
 const testimonials: Testimonial[] = [
@@ -40,6 +41,8 @@ const testimonials: Testimonial[] = [
     name: 'Mohd Shahbaz',
     companyLogo: dataslushLogo,
     occupation: 'Full Stack Developer',
+    linkedIn: 'https://www.linkedin.com/in/mohd-shahbaz-alam',
+
     testimonial: `Working with Tara on the Digit project was an awesome opportunity. Collaboration became easy due to her amazing ability to communicate effectively, to be well-organized, and to help people whenever needed.
 
 She delivered her projects without problems, always being sure that all the processes were documented properly. Tara was very important for the smooth running of the project, and I would definitely recommend her as an efficient consultant.`,
@@ -51,6 +54,7 @@ She delivered her projects without problems, always being sure that all the proc
     name: 'Rachana Ramchandra Bandapalle',
     companyLogo: oneOriginLogo,
     occupation: 'Manager Solution Delivery',
+    linkedIn: 'https://www.linkedin.com/in/rachana-bandapalle',
     testimonial: `TBD`,
   },
   {
@@ -60,6 +64,7 @@ She delivered her projects without problems, always being sure that all the proc
     name: 'Sanjay R V',
     companyLogo: oneOriginLogo,
     occupation: 'Senior Full Stack Engineer',
+    linkedIn: 'https://www.linkedin.com/in/sanjay-r-v',
     testimonial: `Tara is the kind of technical leader who makes everyone around her better.
 
 Over two years, I watched her architect and deliver an enterprise-scale React and TypeScript platform processing 50,000+ daily requests with zero downtime - owning decisions across the full stack, from frontend architecture to AWS infrastructure.
@@ -73,7 +78,8 @@ What makes her exceptional as a consultant isn't just her technical range - it's
     name: 'Kelynn Nowakowski',
     companyLogo: asuLogo,
     occupation: 'Assistant Director, Digit',
-    testimonial: `TBD`,
+    linkedIn: 'https://www.linkedin.com/in/kelynn-now',
+    testimonial: `Working with Tara was always a pleasure. She is reliable, a quick problem solver, efficient, well-spoken, and flexible, among many other wonderful qualities. I would gladly take any opportunity I could to work with her in the future.`,
   },
 ];
 
@@ -244,7 +250,11 @@ export default function Testimonials() {
                     </Box>
 
                     <Box sx={{ minWidth: 0 }}>
-                      <Typography variant="h5">{selected.name}</Typography>
+                      <Typography variant="h5">
+                        <Link href={selected.linkedIn} target="_blank">
+                          {selected.name}
+                        </Link>
+                      </Typography>
                       <Typography variant="body2">
                         {selected.occupation}
                       </Typography>
