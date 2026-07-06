@@ -5,6 +5,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 
 function Copyright() {
   return (
@@ -18,6 +19,9 @@ function Copyright() {
 }
 
 export default function Footer() {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   return (
     <>
       <Container
@@ -30,22 +34,34 @@ export default function Footer() {
           textAlign: 'left',
         }}
       >
-        <div>
-          <Link variant="body1" href="#privacy-policy">
-            Privacy Policy
-          </Link>
-          <Typography sx={{ display: 'inline', mx: 0.5, opacity: 0.5 }}>
-            &nbsp;•&nbsp;
-          </Typography>
-          <Link variant="body1" href="#terms-of-service">
-            Terms of Service
-          </Link>
-          <Copyright />
+        <Stack direction="column">
+          {isMobile && (
+            <Typography
+              component="div"
+              variant="body1"
+              sx={{ display: 'inline', opacity: 0.5 }}
+            >
+              View this site on a desktop for the full experience!
+            </Typography>
+          )}
+
+          <Box>
+            <Link variant="body1" href="#privacy-policy">
+              Privacy Policy
+            </Link>
+            <Typography sx={{ display: 'inline', mx: 0.5, opacity: 0.5 }}>
+              &nbsp;•&nbsp;
+            </Typography>
+            <Link variant="body1" href="#terms-of-service">
+              Terms of Service
+            </Link>
+            <Copyright />
+          </Box>
 
           <Link variant="body1" href="https://github.com/grassmunk/Chicago95">
             Pixel icons based on the Chicago95 project.
           </Link>
-        </div>
+        </Stack>
         <Stack
           direction="row"
           spacing={1}

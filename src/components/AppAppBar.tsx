@@ -194,7 +194,8 @@ export default function AppAppBar({
           }}
         >
           {tasks.map((task) =>
-            task.open || (isMobile && !task.mobileDialog) ? (
+            task.open ||
+            (isMobile && !task.mobileDialog && !task.desktopOnly) ? (
               <Button
                 key={task.href}
                 href={task.href}
