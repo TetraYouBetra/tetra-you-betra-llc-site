@@ -73,7 +73,7 @@ What makes her exceptional as a consultant isn't just her technical range - it's
     name: 'Kelynn Nowakowski',
     companyLogo: asuLogo,
     occupation: 'Assistant Director, Digit',
-    testimonial: `TBD`,
+    testimonial: `Working with Tara was always a pleasure. She is reliable, a quick problem solver, efficient, well-spoken, and flexible, among many other wonderful qualities. I would gladly take any opportunity I could to work with her in the future.`,
   },
 ];
 
