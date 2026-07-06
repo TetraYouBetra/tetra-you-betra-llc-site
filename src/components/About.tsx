@@ -10,6 +10,7 @@ import questionMarkGif from '../assets/Gifs/question-mark.gif';
 import maxwellGif from '../assets/Gifs/maxwell.gif';
 import beesGif from '../assets/Gifs/bees.gif';
 import taraHeadshot from '../assets/Headshots/tara.png';
+import { Link, useMediaQuery, useTheme } from '@mui/material';
 
 const highlights = [
   {
@@ -35,6 +36,9 @@ const highlights = [
 ];
 
 export default function About() {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   const h1Sx: SxProps<Theme> = {
     textAlign: 'center',
     fontFamily: aboutFontFamily,
@@ -250,6 +254,30 @@ export default function About() {
             </Grid>
           ))}
         </Grid>
+        {!isMobile && (
+          <>
+            <Typography
+              variant="body1"
+              sx={{ mb: 2, mt: 4, textAlign: 'center' }}
+            >
+              Still with me? Check out these links!
+            </Typography>
+            <Stack
+              direction="row"
+              sx={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 2,
+                mb: 4,
+              }}
+            >
+              <Link href="#services">Services</Link>
+              <Link href="#testimonials">Testimonials</Link>
+              <Link href="#engagement-options">Engagement Options</Link>
+              <Link href="#contact">Book Consultation</Link>
+            </Stack>
+          </>
+        )}
       </Box>
     </Box>
   );
