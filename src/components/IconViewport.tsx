@@ -234,6 +234,8 @@ export default function IconViewport({
 
     if (!drag.dragging) return;
 
+    event.preventDefault();
+
     const nextPosition = clampPosition(
       drag.startX + distanceX,
       drag.startY + distanceY
@@ -328,6 +330,7 @@ export default function IconViewport({
               position: 'absolute',
               left: position.x,
               top: position.y,
+              touchAction: 'none',
               cursor: 'pointer',
               width: ICON_WIDTH,
               minHeight: ICON_HEIGHT,

@@ -14,8 +14,12 @@ import {
   win95TitleBarHeight,
   win95TaskBarHeight,
 } from '../theme/win95Theme';
-import { Task } from '../YouBetraOS';
 import TaskIcon from './TaskIcon';
+import { Task } from '../contexts/TaskContext';
+import Win95ContextMenu, {
+  ContextMenuPosition,
+  Win95ContextMenuItem,
+} from './Win95ContextMenu';
 
 const TOP_BAR_HEIGHT = win95TaskBarHeight;
 
@@ -70,6 +74,8 @@ export default function WindowFrame({
     x: defaultPosition.x,
     y: Math.max(TOP_BAR_HEIGHT, defaultPosition.y),
   }));
+  const [titleBarContextMenu, setTitleBarContextMenu] =
+    React.useState<ContextMenuPosition | null>(null);
 
   const dragState = React.useRef({
     dragging: false,
@@ -233,6 +239,20 @@ export default function WindowFrame({
     handleMaximize();
   };
 
+  const handleTitleBarContextMenu = (
+    event: React.MouseEvent<HTMLDivElement>
+  ) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    focusWindow();
+
+    setTitleBarContextMenu({
+      mouseX: event.clientX + 2,
+      mouseY: event.clientY - 6,
+    });
+  };
+
   const mobileDialogSx: SxProps<Theme> =
     isMobile && mobileDialog
       ? {
@@ -307,6 +327,25 @@ export default function WindowFrame({
     ...(Array.isArray(sx) ? sx : sx ? [sx] : []),
   ];
 
+  const titleBarContextMenuItems: Win95ContextMenuItem[] = [
+    {
+      label: task.minimized ? 'Restore' : 'Minimize',
+      disabled: isMobile || !onMinimize,
+      onClick: () => startExit('minimize'),
+    },
+    {
+      label: task.maximized ? 'Restore' : 'Maximize',
+      disabled: isMobile || !onMaximize,
+      onClick: handleMaximize,
+    },
+    { type: 'separator' },
+    {
+      label: 'Close',
+      disabled: isMobile && !task.mobileDialog,
+      onClick: () => startExit('close'),
+    },
+  ];
+
   return (
     <Grow
       in={renderVisible}
@@ -336,6 +375,7 @@ export default function WindowFrame({
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
           onDoubleClick={handleTitleBarDoubleClick}
+          onContextMenu={handleTitleBarContextMenu}
           sx={{
             height: win95TitleBarHeight,
             minHeight: win95TitleBarHeight,
@@ -397,6 +437,11 @@ export default function WindowFrame({
         >
           {children}
         </Box>
+        <Win95ContextMenu
+          position={titleBarContextMenu}
+          onClose={() => setTitleBarContextMenu(null)}
+          items={titleBarContextMenuItems}
+        />
       </Box>
     </Grow>
   );

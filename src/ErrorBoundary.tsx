@@ -4,8 +4,8 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
 import WindowFrame from './components/WindowFrame';
-import type { Task } from './YouBetraOS';
 import errorIcon from './assets/Chicago95/icons/32/dialog-error.png';
+import { Task } from './contexts/TaskContext';
 
 type AppError = {
   id: string;

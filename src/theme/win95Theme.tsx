@@ -350,6 +350,10 @@ export const win95ThemeOptions = {
             transform: 'translate(1px, 1px)',
           },
           '&.Mui-disabled': disabledControl,
+          '&:focus-visible': {
+            outline: `1px dotted ${win95.black}`,
+            outlineOffset: '-6px',
+          },
         },
         contained: {
           backgroundColor: win95.face,
@@ -391,6 +395,10 @@ export const win95ThemeOptions = {
               color: win95.shadow,
               filter: 'drop-shadow(1px 1px 0 white)',
             },
+          },
+          '&:focus-visible': {
+            outline: `1px dotted ${win95.black}`,
+            outlineOffset: '-2px',
           },
         },
       },

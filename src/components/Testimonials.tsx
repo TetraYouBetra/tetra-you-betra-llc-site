@@ -12,7 +12,13 @@ import mailOpenIcon from '../assets/Chicago95/icons/32/mail-read.png';
 
 import sanjayAvatar from '../assets/Headshots/sanjay.png';
 import shahbazAvatar from '../assets/Headshots/shahbaz.png';
+import rachanaAvatar from '../assets/Headshots/rachana.png';
 import kelynnAvatar from '../assets/Headshots/kelynn.png';
+
+import asuLogo from '../assets/Logos/asu.png';
+import oneOriginLogo from '../assets/Logos/oneorigin.png';
+import dataslushLogo from '../assets/Logos/dataslush.png';
+
 import TestimonialTree, { TreeNode } from './TestimonialTree';
 import { useMediaQuery, useTheme } from '@mui/material';
 
@@ -28,10 +34,31 @@ type Testimonial = {
 
 const testimonials: Testimonial[] = [
   {
+    id: 'shahbaz',
+    group: 'colleagues',
+    avatar: shahbazAvatar,
+    name: 'Mohd Shahbaz',
+    companyLogo: dataslushLogo,
+    occupation: 'Full Stack Developer',
+    testimonial: `Working with Tara on the Digit project was an awesome opportunity. Collaboration became easy due to her amazing ability to communicate effectively, to be well-organized, and to help people whenever needed.
+
+She delivered her projects without problems, always being sure that all the processes were documented properly. Tara was very important for the smooth running of the project, and I would definitely recommend her as an efficient consultant.`,
+  },
+  {
+    id: 'rachana',
+    group: 'colleagues',
+    avatar: rachanaAvatar,
+    name: 'Rachana Ramchandra Bandapalle',
+    companyLogo: oneOriginLogo,
+    occupation: 'Manager Solution Delivery',
+    testimonial: `TBD`,
+  },
+  {
     id: 'sanjay',
     group: 'colleagues',
     avatar: sanjayAvatar,
     name: 'Sanjay R V',
+    companyLogo: oneOriginLogo,
     occupation: 'Senior Full Stack Engineer',
     testimonial: `Tara is the kind of technical leader who makes everyone around her better.
 
@@ -40,21 +67,12 @@ Over two years, I watched her architect and deliver an enterprise-scale React an
 What makes her exceptional as a consultant isn't just her technical range - it's her composure. She's clear-headed under pressure, decisive when it matters, and brings out strong work in the people she collaborates with. I'd recommend her without hesitation.`,
   },
   {
-    id: 'shahbaz',
-    group: 'colleagues',
-    avatar: shahbazAvatar,
-    name: 'Mohd Shahbaz',
-    occupation: 'Full Stack Developer',
-    testimonial: `Working with Tara on the Digit project was an awesome opportunity. Collaboration became easy due to her amazing ability to communicate effectively, to be well-organized, and to help people whenever needed.
-
-She delivered her projects without problems, always being sure that all the processes were documented properly. Tara was very important for the smooth running of the project, and I would definitely recommend her as an efficient consultant.`,
-  },
-  {
     id: 'kelynn',
     group: 'clients',
     avatar: kelynnAvatar,
     name: 'Kelynn Nowakowski',
-    occupation: 'Assistant Director',
+    companyLogo: asuLogo,
+    occupation: 'Assistant Director, Digit',
     testimonial: `TBD`,
   },
 ];
@@ -120,16 +138,18 @@ export default function Testimonials() {
   } satisfies TreeNode;
 
   return (
-    <Container id="testimonials">
-      <Typography component="h2" variant="h4" gutterBottom>
-        Testimonials
-      </Typography>
+    <Container id="testimonials" sx={{ padding: '0px' }}>
+      <Box sx={{ padding: '4px' }}>
+        <Typography component="h2" variant="h4" gutterBottom>
+          Testimonials
+        </Typography>
 
-      <Typography variant="body1" sx={{ mb: 2 }}>
-        The best measure of my work comes from the people I've had the
-        opportunity to build alongside. Here are a few words from colleagues and
-        clients about their experience working with me.
-      </Typography>
+        <Typography variant="body1" sx={{ mb: 2 }}>
+          The best measure of my work comes from the people I've had the
+          opportunity to build alongside. Here are a few words from colleagues
+          and clients about their experience working with me.
+        </Typography>
+      </Box>
 
       <Box
         sx={{
@@ -233,10 +253,8 @@ export default function Testimonials() {
                     <Box
                       sx={{
                         ml: 'auto',
-                        width: 96,
-                        height: 40,
-                        boxShadow: sunken,
-                        backgroundColor: win95.light,
+                        width: 'auto',
+                        height: 32,
                         flexShrink: 0,
                       }}
                     >
@@ -246,9 +264,6 @@ export default function Testimonials() {
                           src={selected.companyLogo}
                           alt=""
                           sx={{
-                            width: '100%',
-                            height: '100%',
-                            objectFit: 'contain',
                             display: 'block',
                           }}
                         />
